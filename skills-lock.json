@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "skills": {
+    "check": {
+      "source": "tw93/Waza",
+      "sourceType": "github",
+      "skillPath": "skills/check/SKILL.md",
+      "computedHash": "4236d5e15f6d8068b2b1b1baa872d282d83ba5a9fcb9e72fa90f7d40181060f5"
+    },
+    "hunt": {
+      "source": "tw93/Waza",
+      "sourceType": "github",
+      "skillPath": "skills/hunt/SKILL.md",
+      "computedHash": "890da3ba4bcc7ebd7a4414cee31d7c4fc513a9cfd2d933eadb12af4b8bb58aea"
+    },
+    "read": {
+      "source": "tw93/Waza",
+      "sourceType": "github",
+      "skillPath": "skills/read/SKILL.md",
+      "computedHash": "5a22423ec74f967524b91fdfa4ccc268c12bc0408d6ede17fda99f7ac6a2992e"
+    },
+    "think": {
+      "source": "tw93/Waza",
+      "sourceType": "github",
+      "skillPath": "skills/think/SKILL.md",
+      "computedHash": "1770cd0db751a1b15382d00e9e7275b4127f4b9f054d2192afb614da56e846c2"
+    },
+    "ui": {
+      "source": "tw93/Waza",
+      "sourceType": "github",
+      "skillPath": "skills/ui/SKILL.md",
+      "computedHash": "bb2c88206735955badd62501d1deee1ff52cc608e5ce0ca9d246278b4f184443"
+    },
+    "write": {
+      "source": "tw93/Waza",
+      "sourceType": "github",
+      "skillPath": "skills/write/SKILL.md",
+      "computedHash": "688ad4f38c84869cf777bbc631b990962de8f2f5614af4b11871c41f9af3eb2d"
+    }
+  }
+}

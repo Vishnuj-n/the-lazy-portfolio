@@ -1,0 +1,20 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Dependencies
+node_modules/
+master_resume.md
+
+# Agent configuration & brain logs
+.agents/
+
+# Build output
+dist/
+
+# Analysis & raw career notes
+docs/carrer_analysis.md
+docs/career_analysis.md
+Vishnu_J_Narayanan_Career_Analysis.md
+*career_analysis*
