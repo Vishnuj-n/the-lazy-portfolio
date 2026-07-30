@@ -1,21 +1,28 @@
 <script setup>
-const shortYear = String(new Date().getFullYear()).slice(-2);
+import { computed } from 'vue';
 
-const links = [
-  { index: '01', label: 'Work', href: '#selected-work' },
-  { index: '02', label: 'Projects', href: '#projects' },
-  { index: '03', label: 'Credentials', href: '#credentials' },
-];
+const props = defineProps({
+  hasSelectedWork: Boolean,
+  hasProjects: Boolean,
+  hasCredentials: Boolean,
+});
+
+const links = computed(() => [
+  { label: 'Selected work', shortLabel: 'Work', href: '#selected-work' },
+  { label: 'Projects', shortLabel: 'Projects', href: '#projects' },
+  { label: 'Credentials', shortLabel: 'Study', href: '#credentials' },
+  { label: 'GitHub', shortLabel: 'GitHub', href: 'https://github.com/Vishnuj-n', external: true },
+].filter((link) => {
+  if (link.href === '#selected-work') return props.hasSelectedWork;
+  if (link.href === '#projects') return props.hasProjects;
+  if (link.href === '#credentials') return props.hasCredentials;
+  return true;
+}));
 </script>
 
 <template>
   <nav class="site-nav" aria-label="Primary navigation">
-    <a class="site-nav__brand" href="#top" aria-label="Back to top">VJN / {{ shortYear }}</a>
-
-    <p class="status-pill site-nav__status">
-      <span class="status-pill__dot" aria-hidden="true"></span>
-      Building local-first systems
-    </p>
+    <a class="site-nav__brand" href="#top" aria-label="Back to top">Vishnu JN<span aria-hidden="true">.</span></a>
 
     <div class="site-nav__links">
       <a
@@ -23,9 +30,12 @@ const links = [
         :key="link.href"
         :href="link.href"
         :aria-label="`Go to ${link.label}`"
+        :target="link.external ? '_blank' : undefined"
+        :rel="link.external ? 'noreferrer' : undefined"
       >
-        <span class="site-nav__index" aria-hidden="true">{{ link.index }}</span>
-        <span class="site-nav__label">{{ link.label }}</span>
+        <span class="site-nav__label site-nav__label--full">{{ link.label }}</span>
+        <span class="site-nav__label site-nav__label--short">{{ link.shortLabel }}</span>
+        <span v-if="link.external" class="site-nav__external" aria-hidden="true">↗</span>
       </a>
     </div>
   </nav>

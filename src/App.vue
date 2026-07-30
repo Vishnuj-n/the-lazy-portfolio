@@ -17,7 +17,11 @@ const tierTwoProjects = projects.filter((project) => Number(project.tier) === 2)
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
   <div id="top" class="site-shell">
-    <SiteNav />
+    <SiteNav
+      :has-selected-work="tierOneProjects.length > 0"
+      :has-projects="tierTwoProjects.length > 0"
+      :has-credentials="certifications.length > 0"
+    />
     <HeroSection />
 
     <main id="main-content" class="portfolio-main">
@@ -28,7 +32,7 @@ const tierTwoProjects = projects.filter((project) => Number(project.tier) === 2)
 
     <footer class="site-footer">
       <p>Vishnu J Narayanan</p>
-      <p>Backend systems / local-first software / practical AI</p>
+      <p>Built from public GitHub manifests.</p>
     </footer>
   </div>
 </template>
