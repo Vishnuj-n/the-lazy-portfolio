@@ -40,7 +40,15 @@ const initials = computed(() =>
       @error="imageFailed = true"
     />
     <div v-else class="project-media__placeholder" role="img" :aria-label="`${title} monogram preview`">
+      <svg class="project-media__noise" aria-hidden="true">
+        <filter id="noiseFilter">
+          <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+          <feColorMatrix type="saturate" values="0" />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)" opacity="0.07" />
+      </svg>
       <span class="project-media__orbit" aria-hidden="true"></span>
+      <span class="project-media__orbit project-media__orbit--secondary" aria-hidden="true"></span>
       <span class="project-media__initials">{{ initials }}</span>
       <span class="project-media__label">Image not supplied</span>
     </div>

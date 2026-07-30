@@ -15,13 +15,23 @@ export function resolveUsername(env = process.env) {
   return env.GITHUB_USERNAME || env.VITE_GITHUB_USERNAME || 'vishnuj-n';
 }
 
+import { readFileSync } from 'node:fs';
+
 export function githubHeaders(token = process.env.GITHUB_PAT) {
+  let finalToken = token;
+  if (!finalToken) {
+    try {
+      const envContent = readFileSync(resolve('.env'), 'utf8');
+      const match = envContent.match(/GITHUB_PAT=(.*)/);
+      if (match?.[1]) finalToken = match[1].trim();
+    } catch {}
+  }
   const headers = {
     Accept: 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28',
     'User-Agent': 'zero-maintenance-portfolio',
   };
-  if (token) headers.Authorization = `Bearer ${token}`;
+  if (finalToken) headers.Authorization = `Bearer ${finalToken}`;
   return headers;
 }
 

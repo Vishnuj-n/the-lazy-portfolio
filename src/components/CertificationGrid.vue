@@ -10,7 +10,7 @@ defineProps({
 </script>
 
 <template>
-  <section v-if="certifications.length" class="portfolio-section certifications" aria-labelledby="certifications-title">
+  <section v-if="certifications.length" id="credentials" class="portfolio-section certifications" aria-labelledby="certifications-title">
     <header class="section-heading section-heading--compact">
       <p class="section-heading__index">03 / Credentials</p>
       <h2 id="certifications-title">Verified areas of study</h2>

@@ -14,14 +14,19 @@ function projectUrl(project) {
 </script>
 
 <template>
-  <section v-if="projects.length" class="portfolio-section tier-two" aria-labelledby="tier-two-title">
+  <section v-if="projects.length" id="projects" class="portfolio-section tier-two" aria-labelledby="tier-two-title">
     <header class="section-heading section-heading--compact">
       <p class="section-heading__index">02 / Field notes</p>
       <h2 id="tier-two-title">More working software</h2>
     </header>
 
     <div class="tier-two__grid">
-      <article v-for="project in projects" :key="project.repoName || project.title" class="standard-project">
+      <article
+        v-for="(project, index) in projects"
+        :key="project.repoName || project.title"
+        class="standard-project"
+        :style="{ '--card-index': index }"
+      >
         <ProjectMedia :project="project" compact />
         <div class="standard-project__content">
           <div class="project-meta">

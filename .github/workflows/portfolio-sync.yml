@@ -1,0 +1,36 @@
+name: Weekly Portfolio Sync
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: portfolio-sync
+  cancel-in-progress: true
+
+jobs:
+  trigger-vercel-build:
+    name: Trigger Vercel production build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger deploy hook
+        env:
+          VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+        shell: bash
+        run: |
+          if [[ -z "$VERCEL_DEPLOY_HOOK_URL" ]]; then
+            echo "VERCEL_DEPLOY_HOOK_URL is not configured" >&2
+            exit 1
+          fi
+
+          curl \
+            --fail-with-body \
+            --silent \
+            --show-error \
+            --max-time 30 \
+            --request POST \
+            "$VERCEL_DEPLOY_HOOK_URL"

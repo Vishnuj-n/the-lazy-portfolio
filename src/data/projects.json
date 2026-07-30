@@ -1,7 +1,7 @@
 [
   {
-    "title": "StudyLoop",
-    "summary": "StudyLoop is a local-first desktop application built with Go, Wails, and Vue 3 that guides learners through a structured study workflow using a persistent SQLite study queue, FSRS spaced repetition, and local RAG capabilities.",
+    "title": "StudyLoop (Study Workflow System)",
+    "summary": "A local-first desktop application focused on long-term learning retention — not just content generation, but reinforcement. Combines AI-generated quizzes and flashcards with reinforcement-driven review workflows powered by FSRS scheduling.",
     "category": "Educational Technology",
     "date": "2026-07",
     "tier": 1,
@@ -21,28 +21,91 @@
       "Implements a guided learning workflow driven by a persistent SQLite study queue with deterministic priority ordering.",
       "Integrates FSRS (Free Spaced Repetition Scheduler) for long-term flashcard retention and review session management.",
       "Uses ONNX Runtime and sqlite-vec (vec0) for local INT8 embedding generation and vector search in offline RAG pipelines.",
-      "Built with a Go backend desktop shell using Wails v2 and a Vue 3 multi-page frontend.",
-      "Supports dual-tier LLM configurations (Fast and Heavy models) with OS keyring API key storage for AI explanations and quiz generation."
+      "Built with a Go backend desktop shell using Wails v2 and a Vue 3 frontend."
     ],
     "repoName": "studyloop",
-    "repositoryUrl": "https://github.com/Vishnuj-n/studyloop",
-    "stars": 0,
-    "forks": 0,
-    "license": null,
-    "languages": {
-      "Go": 839664,
-      "Vue": 421090,
-      "JavaScript": 73013,
-      "CSS": 27604,
-      "Python": 21771,
-      "PLpgSQL": 17552,
-      "NSIS": 12428,
-      "PowerShell": 11663,
-      "Shell": 5900,
-      "HTML": 979
-    },
-    "createdAt": "2026-04-11T14:22:03Z",
-    "updatedAt": "2026-07-30T14:05:16Z",
-    "pushedAt": "2026-07-30T14:01:51Z"
+    "repositoryUrl": "https://github.com/Vishnuj-n/ai-tutor",
+    "stars": 1,
+    "forks": 0
+  },
+  {
+    "title": "Voice Agent Platform",
+    "summary": "Spearheaded a modular voice-agent architecture using interchangeable adapters for Transport, STT, LLM, TTS, and Embedding providers with RAG capabilities.",
+    "category": "AI Applications",
+    "date": "2026-06",
+    "tier": 2,
+    "priority": 90,
+    "techStack": [
+      "Python",
+      "FastAPI",
+      "PydanticAI",
+      "PostgreSQL",
+      "pgvector",
+      "WebSockets"
+    ],
+    "repoName": "voice-agent",
+    "repositoryUrl": "https://github.com/Vishnuj-n/voice-agent"
+  },
+  {
+    "title": "WalletOS",
+    "summary": "API-first wallet management platform for wallet operations, transaction history, tenant authentication, scoped API keys, and audit logging.",
+    "category": "Backend Systems",
+    "date": "2026-05",
+    "tier": 2,
+    "priority": 85,
+    "techStack": [
+      "TypeScript",
+      "Express",
+      "Next.js",
+      "Prisma",
+      "PostgreSQL",
+      "Nx"
+    ],
+    "repoName": "walletOS",
+    "repositoryUrl": "https://github.com/Vishnuj-n/walletOS"
+  },
+  {
+    "title": "Forge CLI",
+    "summary": "CLI tool for automating project scaffolding, ecosystem orchestration (Git, Python, uv, npm), and template-driven setup workflows.",
+    "category": "Developer Tooling",
+    "date": "2026-04",
+    "tier": 2,
+    "priority": 80,
+    "techStack": [
+      "Go",
+      "CLI"
+    ],
+    "repoName": "forge",
+    "repositoryUrl": "https://github.com/Vishnuj-n/forge"
+  },
+  {
+    "title": "FocusPlay",
+    "summary": "Pomodoro-integrated music player designed around personal focus workflows and distraction reduction in desktop environments.",
+    "category": "Productivity Tooling",
+    "date": "2026-03",
+    "tier": 2,
+    "priority": 75,
+    "techStack": [
+      "Go",
+      "Wails"
+    ],
+    "repoName": "focusplay",
+    "repositoryUrl": "https://github.com/Vishnuj-n/focusplay"
+  },
+  {
+    "title": "Mind Palace Study Tool",
+    "summary": "Earlier Python-based exploration of AI-assisted study scheduling, semantic vector retrieval (RAG), and adaptive reinforcement workflows.",
+    "category": "AI Applications",
+    "date": "2025-11",
+    "tier": 2,
+    "priority": 70,
+    "techStack": [
+      "Python",
+      "Streamlit",
+      "LangChain",
+      "ChromaDB"
+    ],
+    "repoName": "mind-palace-study-tool",
+    "repositoryUrl": "https://github.com/Vishnuj-n/mind-palace-study-tool"
   }
 ]

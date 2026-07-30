@@ -1,5 +1,6 @@
 <script setup>
 import HeroSection from './components/HeroSection.vue';
+import SiteNav from './components/SiteNav.vue';
 import TierOneProjects from './components/TierOneProjects.vue';
 import TierTwoProjects from './components/TierTwoProjects.vue';
 import CertificationGrid from './components/CertificationGrid.vue';
@@ -15,7 +16,8 @@ const tierTwoProjects = projects.filter((project) => Number(project.tier) === 2)
 <template>
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <div class="site-shell">
+  <div id="top" class="site-shell">
+    <SiteNav />
     <HeroSection />
 
     <main id="main-content" class="portfolio-main">

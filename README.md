@@ -40,6 +40,21 @@ Never commit a real token or `.env` file.
 | `npm run build:offline` | Build from the existing generated dataset without network access. |
 | `npm run preview` | Preview the production build locally. |
 
+## Deployment
+
+Vercel owns the production build. GitHub Actions only triggers the Vercel Deploy Hook every Sunday at 00:00 UTC or when the workflow is dispatched manually.
+
+1. Import the repository into Vercel and target the `main` branch.
+2. Use Node.js 20 or newer, the build command `npm run build`, and the output directory `dist`.
+3. Add `GITHUB_PAT` and `GITHUB_USERNAME` to the Vercel project environment. `GITHUB_PAT` should be a read-only token and must never use a `VITE_` prefix.
+4. Create a Vercel Deploy Hook named `GitHub-Cron-Sync` for `main`.
+5. Add the hook URL to the GitHub repository Actions secrets as `VERCEL_DEPLOY_HOOK_URL`.
+6. Open **Actions > Weekly Portfolio Sync**, run the workflow manually, and confirm that the resulting Vercel production deployment succeeds.
+
+During deployment, `npm run build` refreshes project data, verifies remote media, and then compiles the site. If GitHub is temporarily unavailable, the fetch script preserves the committed dataset when it is valid. A failed hook request or Vercel build does not replace the last successful production deployment.
+
+For diagnosis, inspect the GitHub Actions run first. A missing or rejected hook fails the `Trigger deploy hook` step. If that step succeeds, inspect the linked Vercel build logs for ingestion, asset verification, or Vite compilation errors.
+
 ## Add A Project
 
 Add a root-level `PORTFOLIO.json` to a public repository owned by the configured GitHub account. The minimal shape is:
