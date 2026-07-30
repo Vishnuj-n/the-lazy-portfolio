@@ -25,7 +25,7 @@ function formatDate(value) {
 <template>
   <section v-if="projects.length" id="selected-work" class="portfolio-section tier-one" aria-labelledby="tier-one-title">
     <header class="section-heading">
-      <p class="section-heading__index">01 / Selected work</p>
+      <p class="section-heading__index">02 / Selected work</p>
       <h2 id="tier-one-title">Built around the workflow</h2>
       <p>Selected systems where architecture, constraints, and product behavior carry equal weight.</p>
     </header>
@@ -51,6 +51,7 @@ function formatDate(value) {
           <span v-if="project.stars !== undefined">★ {{ project.stars }}</span>
           <span v-if="project.forks">⑂ {{ project.forks }}</span>
           <span>{{ readTime(project) }} min read</span>
+          <RouterLink :to="'/project/' + (project.repoName || project.title).toLowerCase()" class="project-detail-link">Details &rarr;</RouterLink>
           <a v-if="projectUrl(project)" class="project-link" :href="projectUrl(project)" target="_blank" rel="noreferrer">Source <span aria-hidden="true">↗</span></a>
         </footer>
       </article>

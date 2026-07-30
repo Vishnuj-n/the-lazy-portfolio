@@ -8,9 +8,11 @@ const props = defineProps({
 });
 
 const links = computed(() => [
+  { label: 'Stack', shortLabel: 'Stack', href: '#tech-stack' },
   { label: 'Selected work', shortLabel: 'Work', href: '#selected-work' },
   { label: 'Projects', shortLabel: 'Projects', href: '#projects' },
   { label: 'Credentials', shortLabel: 'Study', href: '#credentials' },
+  { label: 'Contact', shortLabel: 'Contact', href: '#contact' },
   { label: 'GitHub', shortLabel: 'GitHub', href: 'https://github.com/Vishnuj-n', external: true },
 ].filter((link) => {
   if (link.href === '#selected-work') return props.hasSelectedWork;

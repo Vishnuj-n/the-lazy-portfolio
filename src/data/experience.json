@@ -1,0 +1,23 @@
+[
+  {
+    "company": "Ellipsonic",
+    "role": "Software Developer Intern",
+    "period": "Mar 2026 – Jul 2026",
+    "location": "Bengaluru, India",
+    "highlights": [
+      "Engineered backend REST APIs and PostgreSQL-backed applications within an Nx monorepo architecture.",
+      "Formulated API testing workflows using Postman and authored unit/integration test suites.",
+      "Automated containerized development and deployment workflows using Docker."
+    ]
+  },
+  {
+    "organization": "AI Club — Atria Institute of Technology",
+    "role": "Technical Lead",
+    "period": "2025 – Present",
+    "location": "Bengaluru, India",
+    "highlights": [
+      "Led technical project architecture discussions and mentored students in backend software engineering and AI systems.",
+      "Conducted hands-on workshops on modern AI application development, RAG pipelines, and API design."
+    ]
+  }
+]

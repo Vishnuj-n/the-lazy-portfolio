@@ -1,35 +1,7 @@
-<script setup>
-import HeroSection from './components/HeroSection.vue';
-import SiteNav from './components/SiteNav.vue';
-import TierOneProjects from './components/TierOneProjects.vue';
-import TierTwoProjects from './components/TierTwoProjects.vue';
-import CertificationGrid from './components/CertificationGrid.vue';
-import projectsData from './data/projects.json';
-import certificationsData from './data/certifications.json';
-
-const projects = Array.isArray(projectsData) ? projectsData : [];
-const certifications = Array.isArray(certificationsData) ? certificationsData : [];
-const tierOneProjects = projects.filter((project) => Number(project.tier) === 1);
-const tierTwoProjects = projects.filter((project) => Number(project.tier) === 2);
-</script>
-
 <template>
   <a class="skip-link" href="#main-content">Skip to main content</a>
-
   <div id="top" class="site-shell">
-    <SiteNav
-      :has-selected-work="tierOneProjects.length > 0"
-      :has-projects="tierTwoProjects.length > 0"
-      :has-credentials="certifications.length > 0"
-    />
-    <HeroSection />
-
-    <main id="main-content" class="portfolio-main">
-      <TierOneProjects :projects="tierOneProjects" />
-      <TierTwoProjects :projects="tierTwoProjects" />
-      <CertificationGrid :certifications="certifications" />
-    </main>
-
+    <router-view />
     <footer class="site-footer">
       <p>Vishnu J Narayanan</p>
       <p>Built from public GitHub manifests.</p>
