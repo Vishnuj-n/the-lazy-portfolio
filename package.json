@@ -5,7 +5,13 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "fetch-data": "node scripts/fetch-projects.js",
+    "verify-assets": "node scripts/verify-assets.js",
+    "prepare-data": "npm run fetch-data && npm run verify-assets",
+    "test": "node --test",
+    "prebuild": "npm run prepare-data",
     "build": "vite build",
+    "build:offline": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {

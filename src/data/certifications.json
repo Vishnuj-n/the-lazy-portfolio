@@ -1,0 +1,28 @@
+[
+  {
+    "title": "Oracle Cloud Infrastructure 2025 Generative AI Professional",
+    "issuer": "Oracle",
+    "slug": "oracle",
+    "color": "F80000"
+  },
+  {
+    "title": "GitHub Foundations",
+    "issuer": "GitHub",
+    "slug": "github",
+    "color": "FFFFFF"
+  },
+  {
+    "title": "Postman API Fundamentals Student Expert",
+    "issuer": "Postman",
+    "slug": "postman",
+    "color": "FF6C37"
+  },
+  {
+    "title": "Programming, Data Structures and Algorithms Using Python (NPTEL Elite)",
+    "issuer": "NPTEL"
+  },
+  {
+    "title": "AWS Solutions Architecture Job Simulation (Forage)",
+    "issuer": "Forage"
+  }
+]

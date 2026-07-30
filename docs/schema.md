@@ -1,98 +1,77 @@
-# `PORTFOLIO.json` Schema
+# `PORTFOLIO.json` Manifest
 
 ## Purpose
 
-Each public repository that should appear in the portfolio must contain a
-`PORTFOLIO.json` file at its repository root. The ingestion pipeline validates
-this manifest before including the project in `src/data/projects.json`.
+Any public repository that should appear in the portfolio must contain a
+`PORTFOLIO.json` file at its root. The ingestion pipeline reads this file,
+validates the required fields, and adds GitHub repository metadata before
+writing `src/data/projects.json`.
 
-The manifest contains curated presentation data only. Repository metadata such
-as the repository name, URL, stars, forks, license, languages, and GitHub
-timestamps is derived from the GitHub API by the ingestion pipeline.
+Keep the manifest small. Include curated project information only. The pipeline
+derives the repository name, repository URL, stars, forks, license, languages,
+and GitHub timestamps from the GitHub API.
 
-## Canonical Structure
+## Required Fields
+
+| Field | Type | Rules |
+|---|---|---|
+| `title` | String | Project display name, 2 to 80 characters. |
+| `summary` | String | Factual project description, 40 to 500 characters. |
+| `category` | String | Primary project category, 2 to 80 characters. |
+| `date` | String | Major release or project date in `YYYY-MM` format. |
+| `tier` | Integer | `1` for flagship, `2` for standard, or `3` for archive and experiments. |
+| `priority` | Integer | Display order from `0` to `100`, sorted from highest to lowest. |
+| `techStack` | String array | Between 1 and 12 unique, verified technologies. |
+
+A manifest missing any required field is excluded from the generated project
+dataset. The ingestion pipeline reports the validation error and continues
+scanning other repositories.
+
+## Optional Fields
+
+| Field | Type | Behavior when omitted |
+|---|---|---|
+| `highlights` | String array | The UI hides the highlights section. |
+| `media.thumbnail` | HTTPS URL | The UI displays a project monogram or neutral placeholder. |
+| `media.videoDemo` | HTTPS URL | The UI hides the video action. |
+| `links.live` | HTTPS URL | The UI hides the live-project action. |
+| `links.documentation` | HTTPS URL | The UI hides the documentation action. |
+
+Optional fields should be omitted when no verified value is available. Do not
+use empty strings, `null`, or placeholder URLs. If `media` or `links` is present,
+it may contain only the documented fields.
+
+## Minimal Valid Manifest
 
 ```json
 {
-  "schemaVersion": 1,
-  "title": "Project display name",
-  "summary": "A concise explanation of the problem, architecture, and outcome.",
-  "category": "Primary project category",
-  "date": "YYYY-MM",
+  "title": "StudyLoop",
+  "summary": "A local-first desktop AI tutoring application combining spaced-repetition scheduling with semantic content retrieval.",
+    "category": "Educational Technology",
+    "date": "2026-07",
   "tier": 1,
   "priority": 100,
   "techStack": [
-    "Technology One",
-    "Technology Two"
-  ],
-  "highlights": [
-    "Specific technical capability or measurable result",
-    "Another important architectural feature"
-  ],
-  "media": {
-    "thumbnail": null,
-    "videoDemo": null
-  },
-  "links": {
-    "live": null,
-    "documentation": null
-  }
+    "Go",
+    "Wails",
+    "Vue 3",
+    "SQLite",
+    "FSRS"
+  ]
 }
 ```
 
-## Field Definitions
+The values above reflect the current public StudyLoop manifest. Re-verify project
+claims before copying them into another repository.
 
-| Field | Type | Required | Validation |
-|---|---|---:|---|
-| `schemaVersion` | Integer | Yes | Must be exactly `1`. |
-| `title` | String | Yes | Between 2 and 80 characters. |
-| `summary` | String | Yes | Between 40 and 500 characters. Must describe the problem, architecture, and practical outcome. |
-| `category` | String | Yes | Between 2 and 80 characters. |
-| `date` | String | Yes | Must use the `YYYY-MM` format and represent the most defensible major release or project date. |
-| `tier` | Integer | Yes | Must be between `1` and `3`. |
-| `priority` | Integer | Yes | Must be between `0` and `100`. Projects are displayed in descending priority order. |
-| `techStack` | String array | Yes | Must contain 1 to 12 unique, non-empty technology names. |
-| `highlights` | String array | Yes | Must contain 1 to 6 concise, factual, non-empty statements. |
-| `media.thumbnail` | String or `null` | Yes | Must be an absolute HTTPS URL or `null`. |
-| `media.videoDemo` | String or `null` | Yes | Must be an absolute HTTPS URL or `null`. |
-| `links.live` | String or `null` | Yes | Must be an absolute HTTPS URL or `null`. |
-| `links.documentation` | String or `null` | Yes | Must be an absolute HTTPS URL or `null`. |
-
-## Tier And Priority Rules
-
-| Tier | Meaning |
-|---:|---|
-| `1` | Flagship project rendered in the primary editorial layout. |
-| `2` | Standard project rendered in the projects grid. |
-| `3` | Archive, experiment, or supporting project. |
-
-Use priorities from `90` to `100` only for the most important work. Priority
-controls ordering, while tier controls layout treatment.
-
-## Authoring Rules
-
-- The filename must be exactly `PORTFOLIO.json` and must be stored at the repository root.
-- The file must contain valid JSON with double quotes, no comments, and no trailing commas.
-- Use `null` when an optional URL is unavailable. Do not use empty strings or placeholder URLs.
-- All URLs must use HTTPS and must resolve without authentication.
-- Include only claims and technologies that can be verified from the repository.
-- Keep technology names consistently capitalized, such as `Vue 3`, `SQLite`, and `Wails`.
-- Do not add fields outside the canonical structure for schema version 1.
-- Do not include `repoName`, `repositoryUrl`, stars, forks, license, languages, or update timestamps.
-
-## StudyLoop Example
-
-The following manifest is a starting point based on the currently documented
-StudyLoop architecture. Verify its date and every technical claim against the
-StudyLoop repository before committing it.
+## Complete Manifest
 
 ```json
 {
-  "schemaVersion": 1,
   "title": "StudyLoop",
-  "summary": "A local-first desktop AI tutoring application that combines spaced-repetition scheduling, semantic content retrieval, and persistent local storage for personalized study workflows.",
-  "category": "Desktop App / AI Systems",
-  "date": "2026-05",
+  "summary": "A local-first desktop AI tutoring application combining spaced-repetition scheduling with semantic content retrieval.",
+  "category": "Educational Technology",
+  "date": "2026-07",
   "tier": 1,
   "priority": 100,
   "techStack": [
@@ -104,98 +83,133 @@ StudyLoop repository before committing it.
   ],
   "highlights": [
     "Uses FSRS-based scheduling to model review timing and retention.",
-    "Processes learning material into semantic chunks for contextual retrieval.",
-    "Stores application and study data locally with SQLite.",
-    "Packages the Vue interface as a native desktop application through Wails."
+    "Stores application and study data locally with SQLite."
   ],
   "media": {
-    "thumbnail": null,
-    "videoDemo": null
+    "thumbnail": "https://example.com/studyloop-thumbnail.webp",
+    "videoDemo": "https://example.com/studyloop-demo.mp4"
   },
   "links": {
-    "live": null,
-    "documentation": null
+    "live": "https://studyloop.example.com",
+    "documentation": "https://docs.studyloop.example.com"
   }
 }
 ```
+
+The URLs above illustrate the structure only. Never put these placeholder URLs
+in a real manifest.
+
+## Authoring Rules
+
+- Store the file as `PORTFOLIO.json` at the repository root.
+- Use valid JSON with double quotes, no comments, and no trailing commas.
+- Include every required field.
+- Omit unavailable optional fields instead of adding empty or placeholder values.
+- Use only absolute HTTPS URLs that are publicly accessible without authentication.
+- Include only claims and technologies that can be verified from repository files.
+- Keep technology names consistently capitalized, such as `Vue 3`, `SQLite`, and `Wails`.
+- Keep highlights concise, factual, and technically specific.
+- Do not include fields that the ingestion pipeline derives from GitHub.
 
 ## Agent Prompt
 
-Use the following prompt inside a project repository to generate its manifest:
+Use the following prompt inside a project repository:
 
 ```text
-Create a PORTFOLIO.json file at the root of this repository.
+Inspect this repository and create PORTFOLIO.json at its root for use by an
+automated developer portfolio.
 
-First inspect the repository, including README files, package manifests, source
-directories, documentation, release metadata, and git history when available.
-Use only facts that can be verified from the repository. Do not invent features,
-metrics, URLs, technologies, dates, or outcomes.
+Before writing the file, inspect the README, package manifests, source tree,
+documentation, release metadata, and git history when available. Use only facts
+that can be verified from the repository. Do not invent features, technologies,
+metrics, dates, outcomes, or URLs.
 
-The file must follow this exact schema:
+PORTFOLIO.json has these required fields:
+
+- title: project display name, string, 2 to 80 characters
+- summary: factual description of the problem, architecture, and practical
+  outcome, string, 40 to 500 characters
+- category: primary project category, string, 2 to 80 characters
+- date: the most defensible major release or project date in YYYY-MM format
+- tier: integer 1, 2, or 3; use 1 for flagship, 2 for standard, and 3 for archive
+  or experimental work
+- priority: integer from 0 to 100; use 100 only for a primary flagship project
+- techStack: array containing 1 to 12 unique technologies verified in the repo
+
+These fields are optional:
+
+- highlights: array containing 1 to 6 concise, technically specific facts
+- media.thumbnail: publicly accessible absolute HTTPS image URL
+- media.videoDemo: publicly accessible absolute HTTPS video or demo URL
+- links.live: publicly accessible absolute HTTPS deployed-project URL
+- links.documentation: publicly accessible absolute HTTPS documentation URL
+
+Omit an optional field when no verified value exists. Do not use null, empty
+strings, example domains, guessed links, local file paths, or placeholder URLs.
+If media has no verified child fields, omit media. If links has no verified child
+fields, omit links.
+
+Use this structure, removing optional sections that cannot be verified:
 
 {
-  "schemaVersion": 1,
-  "title": "string",
-  "summary": "string",
-  "category": "string",
+  "title": "Project name",
+  "summary": "Verified project description.",
+  "category": "Project category",
   "date": "YYYY-MM",
-  "tier": 1,
-  "priority": 100,
-  "techStack": ["string"],
-  "highlights": ["string"],
+  "tier": 2,
+  "priority": 50,
+  "techStack": ["Verified technology"],
+  "highlights": ["Verified technical fact."],
   "media": {
-    "thumbnail": null,
-    "videoDemo": null
+    "thumbnail": "https://verified-public-url",
+    "videoDemo": "https://verified-public-url"
   },
   "links": {
-    "live": null,
-    "documentation": null
+    "live": "https://verified-public-url",
+    "documentation": "https://verified-public-url"
   }
 }
 
-Validation requirements:
+Do not include repoName, repositoryUrl, stars, forks, license, languages, GitHub
+timestamps, schemaVersion, or any field not listed above. The portfolio ingestion
+pipeline derives repository metadata from GitHub.
 
-1. schemaVersion must be the integer 1.
-2. title must contain 2 to 80 characters.
-3. summary must contain 40 to 500 characters and explain the problem,
-   architecture, and practical outcome.
-4. category must contain 2 to 80 characters.
-5. date must use YYYY-MM and should represent the most defensible major release
-   or project date found in the repository.
-6. tier must be an integer from 1 to 3. Use 1 for a flagship project, 2 for a
-   standard project, or 3 for an archive or experiment.
-7. priority must be an integer from 0 to 100. Use 100 only when the repository is
-   a primary flagship project.
-8. techStack must contain 1 to 12 unique, verified technologies.
-9. highlights must contain 1 to 6 concise, technically specific, verifiable
-   statements.
-10. Every URL must be an absolute HTTPS URL.
-11. Use null for unavailable media or links. Never use an empty string or a
-    placeholder URL.
-12. Do not add fields outside this schema.
-13. Do not include repository name, repository URL, stars, forks, license,
-    languages, or update timestamps. The portfolio ingestion pipeline derives
-    those values from GitHub.
-14. Produce valid JSON with double quotes, no comments, and no trailing commas.
+Write the completed manifest directly to PORTFOLIO.json. Parse the finished file
+as JSON to verify that it has double-quoted keys and strings, no comments, and no
+trailing commas. Confirm that all required fields are present and that date,
+tier, priority, and techStack satisfy their constraints.
 
-Write the completed file directly to PORTFOLIO.json. Parse it as JSON to verify
-its syntax. Then report which repository files support each selected technology
-and highlight, and identify any fields set to null because no verified URL was
-found.
+After writing and validating the file, report:
+
+1. The repository evidence used for each technology and highlight.
+2. The reason for the selected tier and priority.
+3. Which optional fields were omitted because no verified value was found.
 ```
 
-## Pipeline Behavior
+## Validation Approach
 
-The ingestion pipeline must reject a manifest when:
+No separate JSON Schema is required. `scripts/fetch-projects.js` validates the
+parsed object directly with JavaScript. It checks required fields, types, limits,
+date format, allowed numeric ranges, arrays, and optional HTTPS URLs.
 
-- Required fields are absent or have the wrong type.
-- A string or array violates its size limit.
-- `date` is not a valid `YYYY-MM` value.
-- `tier`, `priority`, or `schemaVersion` is outside its allowed range.
-- A URL is neither `null` nor an absolute HTTPS URL.
-- A technology or highlight is duplicated or empty.
-- The JSON cannot be parsed.
+Invalid manifests do not stop the complete scan. The pipeline reports the
+repository name and errors, skips that project, and continues processing the
+remaining repositories.
 
-A rejected manifest must not stop the complete repository scan. The pipeline
-should report the repository name and validation errors, skip that project, and
-continue processing the remaining repositories.
+## Generated Metadata
+
+Validated manifests are augmented in `src/data/projects.json` with these fields:
+
+| Field | Type | Source |
+|---|---|---|
+| `repoName` | String | GitHub repository name. |
+| `repositoryUrl` | HTTPS URL | GitHub repository page. |
+| `stars` | Integer | Current stargazer count. |
+| `forks` | Integer | Current fork count. |
+| `license` | String or `null` | GitHub SPDX identifier when available. |
+| `languages` | Object | Language names mapped to byte counts. |
+| `createdAt` | ISO timestamp | GitHub repository creation time. |
+| `updatedAt` | ISO timestamp | GitHub repository update time. |
+| `pushedAt` | ISO timestamp | Most recent GitHub push time. |
+
+Do not author these fields in `PORTFOLIO.json`.
