@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
-  <rect width="240" height="240" rx="8" fill="#242424"/>
-  <circle cx="120" cy="90" r="45" fill="#555555"/>
-  <path d="M40 210 C40 155, 75 145, 120 145 C165 145, 200 155, 200 210 Z" fill="#555555"/>
-  <text x="120" y="225" font-family="JetBrains Mono, monospace" font-size="12" fill="#888888" text-anchor="middle">VISHNU J NARAYANAN</text>
-</svg>

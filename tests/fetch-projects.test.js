@@ -50,7 +50,10 @@ test('resolves username precedence and optional authentication headers', () => {
   assert.equal(resolveUsername({ VITE_GITHUB_USERNAME: 'second' }), 'second');
   assert.equal(resolveUsername({}), 'vishnuj-n');
   assert.equal(githubHeaders('secret').Authorization, 'Bearer secret');
+  const envPat = process.env.GITHUB_PAT;
+  delete process.env.GITHUB_PAT;
   assert.equal(githubHeaders().Authorization, undefined);
+  if (envPat) process.env.GITHUB_PAT = envPat;
 });
 
 test('validator mirrors manifest constraints and rejects unknown fields', () => {
@@ -94,7 +97,7 @@ test('ingests paginated repositories, skips 404 and invalid manifests, then sort
   };
 
   const projects = await fetchPortfolioData({
-    username: 'owner', fetchImpl, write: false, logger: { warn() {} }, concurrency: 2,
+    username: 'owner', fetchImpl, write: false, logger: { warn() {} }, concurrency: 2, localProjectsMap: new Map(),
   });
   assert.deepEqual(projects.map((project) => project.repoName), ['first', 'later']);
   assert.equal(projects[0].repositoryUrl, 'https://github.com/owner/first');
@@ -148,6 +151,7 @@ test('fails on total API failure when no valid dataset exists', async () => {
   try {
     await assert.rejects(fetchPortfolioData({
       outputPath: join(directory, 'projects.json'),
+      localProjectsMap: new Map(),
       fetchImpl: async () => { throw new Error('network down'); },
       logger: { warn() {} },
     }), /network down/);
@@ -155,3 +159,35 @@ test('fails on total API failure when no valid dataset exists', async () => {
     await rm(directory, { recursive: true, force: true });
   }
 });
+
+test('prioritizes remote PORTFOLIO.json over local project details, and uses local details as fallback', async () => {
+  const localProjectsMap = new Map([
+    ['remote-repo', manifest({ title: 'Local Version Title', repoName: 'remote-repo' })],
+    ['local-only-repo', manifest({ title: 'Fallback Local Title', repoName: 'local-only-repo' })],
+  ]);
+
+  const repos = [repo('remote-repo'), repo('local-only-repo')];
+  const fetchImpl = async (url) => {
+    if (url.includes('/users/')) return response(repos);
+    if (url.includes('/remote-repo/contents/')) {
+      return response({
+        type: 'file', encoding: 'base64',
+        content: Buffer.from(JSON.stringify(manifest({ title: 'Remote Remote Title' }))).toString('base64'),
+      });
+    }
+    if (url.includes('/local-only-repo/contents/')) return response({ message: 'Not Found' }, { status: 404 });
+    if (url.endsWith('/languages')) return response({});
+    throw new Error(`Unexpected URL: ${url}`);
+  };
+
+  const projects = await fetchPortfolioData({
+    username: 'owner', fetchImpl, write: false, logger: { warn() {} }, localProjectsMap,
+  });
+
+  const remoteProj = projects.find((p) => p.repoName === 'remote-repo');
+  const localProj = projects.find((p) => p.repoName === 'local-only-repo');
+
+  assert.equal(remoteProj.title, 'Remote Remote Title');
+  assert.equal(localProj.title, 'Fallback Local Title');
+});
+

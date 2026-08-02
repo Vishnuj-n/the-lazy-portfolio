@@ -5,7 +5,7 @@ const avatarFailed = ref(false);
 </script>
 
 <template>
-  <header class="hero" aria-labelledby="hero-title">
+  <section class="hero" aria-labelledby="hero-title">
     <div class="hero__grid">
       <div class="hero__content">
         <p class="eyebrow">Software engineering student · Bengaluru</p>
@@ -47,7 +47,7 @@ const avatarFailed = ref(false);
         <div class="hero__avatar-frame" title="Vishnu J Narayanan">
           <img
             v-if="!avatarFailed"
-            src="/avatar-bw.svg"
+            src="/picture.png"
             alt="Vishnu J Narayanan"
             class="hero__avatar-img"
             @error="avatarFailed = true"
@@ -59,6 +59,6 @@ const avatarFailed = ref(false);
         </div>
       </div>
     </div>
-  </header>
+  </section>
 </template>
 

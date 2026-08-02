@@ -19,20 +19,27 @@ const tierTwoProjects = projects.filter((project) => Number(project.tier) === 2)
 </script>
 
 <template>
-  <SiteNav
-    :has-selected-work="tierOneProjects.length > 0"
-    :has-projects="tierTwoProjects.length > 0"
-    :has-credentials="certifications.length > 0"
-  />
-  <HeroSection />
+  <header class="site-header">
+    <div class="site-shell">
+      <SiteNav
+        :has-selected-work="tierOneProjects.length > 0"
+        :has-projects="tierTwoProjects.length > 0"
+        :has-credentials="certifications.length > 0"
+      />
+    </div>
+  </header>
 
-  <main id="main-content" class="portfolio-main">
-    <WorkExperience :experience="experience" />
-    <TechStack />
-    <TierOneProjects :projects="tierOneProjects" />
-    <TierTwoProjects :projects="tierTwoProjects" />
-    <CertificationGrid :certifications="certifications" />
-    <ContactSection />
-  </main>
+  <div class="site-shell">
+    <HeroSection />
+
+    <main id="main-content" class="portfolio-main">
+      <WorkExperience :experience="experience" />
+      <TechStack />
+      <TierOneProjects :projects="tierOneProjects" />
+      <TierTwoProjects :projects="tierTwoProjects" />
+      <CertificationGrid :certifications="certifications" />
+      <ContactSection />
+    </main>
+  </div>
 </template>
 
