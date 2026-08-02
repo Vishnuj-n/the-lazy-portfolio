@@ -1,4 +1,6 @@
 <script setup>
+import { RouterLink } from 'vue-router';
+
 defineProps({
   projects: {
     type: Array,
@@ -23,34 +25,89 @@ function formatDate(value) {
 </script>
 
 <template>
-  <section v-if="projects.length" id="projects" class="portfolio-section tier-two" aria-labelledby="tier-two-title">
-    <header class="section-heading section-heading--compact">
-      <p class="section-heading__index">02 / Projects</p>
-      <h2 id="tier-two-title">More working software</h2>
-      <p>Smaller systems, experiments, and tools built to answer a specific need.</p>
-    </header>
+  <section v-if="projects.length" id="projects" class="px-6 md:px-8 py-16 md:py-20 max-w-5xl mx-auto" aria-labelledby="tier-two-title">
+    <div class="flex items-center gap-3 mb-6">
+      <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground); letter-spacing: 0.12em;">
+        04
+      </span>
+      <div style="width: 24px; height: 1px; background: var(--muted-foreground); opacity: 0.4;" />
+      <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground); letter-spacing: 0.12em; text-transform: uppercase;">
+        More Projects
+      </span>
+    </div>
 
-    <div class="project-list">
-      <article
-        v-for="(project, index) in projects"
-        :key="project.repoName || project.title"
-        class="project-card"
+    <h2
+      id="tier-two-title"
+      style="font-family: var(--font-display); font-size: clamp(28px, 4vw, 42px); font-weight: 600; letter-spacing: -0.025em; color: var(--foreground); margin-bottom: 8px;"
+    >
+      More working software
+    </h2>
+    <p style="font-family: var(--font-sans); font-size: 14px; color: var(--muted-foreground); margin-bottom: 32px; max-width: 520px;">
+      Smaller systems, experiments, and tools built to answer a specific need.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div
+        v-for="(p, i) in projects"
+        :key="p.repoName || p.title"
         data-testid="project-card"
+        style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; transition: border-color 0.15s;"
+        class="hover:border-[rgba(200,245,66,0.2)] group"
       >
-        <div class="project-card__kicker"><span>{{ String(index + 1).padStart(2, '0') }}</span><span>{{ project.category || 'Project' }}</span></div>
-        <h3><a v-if="projectUrl(project)" :href="projectUrl(project)" target="_blank" rel="noreferrer">{{ project.title }}</a><template v-else>{{ project.title }}</template></h3>
-        <p class="project-card__summary">{{ project.summary }}</p>
-        <ul v-if="project.techStack?.length" class="tech-list" aria-label="Technologies used">
-          <li v-for="tech in project.techStack" :key="tech">{{ tech }}</li>
-        </ul>
-        <footer class="project-card__footer">
-          <time v-if="project.updatedAt || project.date" :datetime="project.updatedAt || project.date">Updated {{ formatDate(project.updatedAt || project.date) }}</time>
-          <span v-if="project.stars !== undefined">★ {{ project.stars }}</span>
-          <span v-if="project.forks">⑂ {{ project.forks }}</span>
-          <span>{{ readTime(project) }} min read</span>
-          <a v-if="projectUrl(project)" class="project-link" :href="projectUrl(project)" target="_blank" rel="noreferrer">Source <span aria-hidden="true">↗</span></a>
-        </footer>
-      </article>
+        <div class="flex items-start justify-between gap-4 mb-3">
+          <div>
+            <span style="font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; color: var(--muted-foreground); display: block; margin-bottom: 6px; text-transform: uppercase;">
+              {{ String(i + 1).padStart(2, '0') }} / {{ p.category || 'PROJECT' }}
+            </span>
+            <h3 style="font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: -0.02em; color: var(--foreground);">
+              {{ p.title }}
+            </h3>
+          </div>
+          <a
+            v-if="projectUrl(p)"
+            :href="projectUrl(p)"
+            target="_blank"
+            rel="noreferrer"
+            style="font-family: var(--font-mono); font-size: 11px; color: var(--primary); text-decoration: none; white-space: nowrap; padding: 3px 8px; border: 1px solid rgba(200,245,66,0.3); border-radius: var(--radius); flex-shrink: 0;"
+          >
+            Source ↗
+          </a>
+        </div>
+
+        <p style="font-family: var(--font-sans); font-size: 13px; line-height: 1.6; color: var(--secondary-foreground); margin-bottom: 16px;">
+          {{ p.summary }}
+        </p>
+
+        <div v-if="p.techStack?.length" class="flex flex-wrap gap-1.5 mb-4">
+          <span
+            v-for="t in p.techStack"
+            :key="t"
+            class="inline-block px-2 py-0.5 text-xs rounded-sm border"
+            style="font-family: var(--font-mono); background: rgba(200,245,66,0.06); border-color: rgba(200,245,66,0.18); color: #c8f542; letter-spacing: 0.02em;"
+          >
+            {{ t }}
+          </span>
+        </div>
+
+        <div class="flex items-center gap-3 flex-wrap">
+          <span v-if="p.updatedAt || p.date" style="font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground);">
+            Updated {{ formatDate(p.updatedAt || p.date) }}
+          </span>
+          <span v-if="p.stars !== undefined" style="font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground);">
+            ★ {{ p.stars }}
+          </span>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground);">
+            {{ readTime(p) }} min read
+          </span>
+          <RouterLink
+            :to="'/project/' + (p.repoName || p.title).toLowerCase()"
+            style="font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground); transition: color 0.15s;"
+            class="hover:text-[var(--foreground)]"
+          >
+            Details →
+          </RouterLink>
+        </div>
+      </div>
     </div>
   </section>
 </template>

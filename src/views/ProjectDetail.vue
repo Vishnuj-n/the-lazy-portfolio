@@ -14,168 +14,107 @@ const project = computed(() => {
 </script>
 
 <template>
-  <div v-if="project" class="project-detail">
-    <RouterLink to="/" class="back-link">&larr; Back to Portfolio</RouterLink>
+  <div v-if="project" class="px-6 md:px-8 py-12 md:py-16 max-w-4xl mx-auto">
+    <RouterLink
+      to="/"
+      style="font-family: var(--font-mono); font-size: 12px; color: var(--muted-foreground); text-decoration: none; display: inline-block; margin-bottom: 24px; transition: color 0.15s;"
+      class="hover:text-[var(--foreground)]"
+    >
+      ← Back to Portfolio
+    </RouterLink>
 
-    <header class="project-detail__header">
-      <p class="eyebrow">{{ project.category }} · {{ project.date }}</p>
-      <h1>{{ project.title }}</h1>
-      <p class="project-detail__summary">{{ project.summary }}</p>
+    <header class="mb-12">
+      <p style="font-family: var(--font-mono); font-size: 11px; color: var(--primary); letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 12px;">
+        {{ project.category }} <span v-if="project.date">· {{ project.date }}</span>
+      </p>
+      <h1
+        style="font-family: var(--font-display); font-size: clamp(32px, 5vw, 54px); font-weight: 700; letter-spacing: -0.025em; color: var(--foreground); margin-bottom: 16px; line-height: 1.1;"
+      >
+        {{ project.title }}
+      </h1>
+      <p style="font-family: var(--font-sans); font-size: 16px; line-height: 1.7; color: var(--secondary-foreground); max-width: 680px; margin-bottom: 24px;">
+        {{ project.summary }}
+      </p>
 
-      <div class="project-detail__actions">
+      <div class="flex items-center gap-3 flex-wrap">
         <a
           v-if="project.repositoryUrl"
           :href="project.repositoryUrl"
           target="_blank"
           rel="noreferrer"
-          class="btn btn--primary"
+          style="font-family: var(--font-sans); font-size: 13px; font-weight: 500; padding: 9px 20px; background: var(--primary); color: var(--primary-foreground); border-radius: var(--radius); text-decoration: none; transition: opacity 0.15s;"
+          class="hover:opacity-90"
         >
-          View Source Code &rarr;
+          View Source Code ↗
         </a>
         <a
           v-if="project.links?.live"
           :href="project.links.live"
           target="_blank"
           rel="noreferrer"
-          class="btn btn--secondary"
+          style="font-family: var(--font-sans); font-size: 13px; font-weight: 500; padding: 9px 20px; background: transparent; color: var(--foreground); border: 1px solid var(--border); border-radius: var(--radius); text-decoration: none; transition: border-color 0.15s;"
+          class="hover:border-[rgba(240,237,232,0.3)]"
         >
-          Live Demo
+          Live Demo ↗
         </a>
       </div>
     </header>
 
-    <!-- Media Section (Videos & Screenshots) -->
-    <section class="project-detail__media" v-if="project.media">
-      <h2>Media & Product Showcase</h2>
-      <div v-if="project.media.videoDemo" class="video-container">
-        <video controls autoplay loop muted :src="project.media.videoDemo"></video>
+    <!-- Media Section -->
+    <section v-if="project.media" class="pt-8 mb-12" style="border-top: 1px solid var(--border);">
+      <h2 style="font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--foreground); margin-bottom: 16px;">
+        Media & Showcase
+      </h2>
+      <div v-if="project.media.videoDemo" class="mb-4 rounded overflow-hidden" style="border: 1px solid var(--border);">
+        <video controls autoplay loop muted :src="project.media.videoDemo" class="w-full max-h-[480px] object-cover"></video>
       </div>
-      <div v-if="project.media.thumbnail" class="thumbnail-container">
-        <img :src="project.media.thumbnail" :alt="project.title + ' preview'" />
+      <div v-if="project.media.thumbnail" class="rounded overflow-hidden" style="border: 1px solid var(--border);">
+        <img :src="project.media.thumbnail" :alt="project.title + ' preview'" class="w-full max-h-[480px] object-cover" />
       </div>
     </section>
 
-    <!-- Technical Architecture & Key Highlights -->
-    <section class="project-detail__section" v-if="project.highlights?.length">
-      <h2>Architectural Highlights & Features</h2>
-      <ul class="highlights-list">
-        <li v-for="(highlight, i) in project.highlights" :key="i">
+    <!-- Architectural Highlights -->
+    <section v-if="project.highlights?.length" class="pt-8 mb-12" style="border-top: 1px solid var(--border);">
+      <h2 style="font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--foreground); margin-bottom: 16px;">
+        Architectural Highlights & Features
+      </h2>
+      <ul class="flex flex-col gap-2.5">
+        <li
+          v-for="(highlight, i) in project.highlights"
+          :key="i"
+          style="font-family: var(--font-sans); font-size: 14px; line-height: 1.65; color: var(--secondary-foreground); padding-left: 16px; position: relative;"
+        >
+          <span style="position: absolute; left: 0; top: 8px; width: 4px; height: 4px; border-radius: 50%; background: var(--primary); display: block;" />
           {{ highlight }}
         </li>
       </ul>
     </section>
 
-    <!-- Tech Stack Breakdown -->
-    <section class="project-detail__section" v-if="project.techStack?.length">
-      <h2>Technologies Used</h2>
-      <ul class="tech-list">
-        <li v-for="tech in project.techStack" :key="tech">{{ tech }}</li>
-      </ul>
+    <!-- Tech Stack -->
+    <section v-if="project.techStack?.length" class="pt-8 mb-12" style="border-top: 1px solid var(--border);">
+      <h2 style="font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--foreground); margin-bottom: 16px;">
+        Technologies Used
+      </h2>
+      <div class="flex flex-wrap gap-2">
+        <span
+          v-for="tech in project.techStack"
+          :key="tech"
+          class="inline-block px-2.5 py-1 text-xs rounded-sm border"
+          style="font-family: var(--font-mono); background: rgba(200,245,66,0.06); border-color: rgba(200,245,66,0.18); color: #c8f542; letter-spacing: 0.02em;"
+        >
+          {{ tech }}
+        </span>
+      </div>
     </section>
 
-    <footer class="project-detail__footer">
-      <RouterLink to="/" class="back-link">&larr; Back to Home</RouterLink>
+    <footer class="pt-8" style="border-top: 1px solid var(--border);">
+      <RouterLink
+        to="/"
+        style="font-family: var(--font-mono); font-size: 12px; color: var(--muted-foreground); text-decoration: none;"
+        class="hover:text-[var(--foreground)]"
+      >
+        ← Back to Home
+      </RouterLink>
     </footer>
   </div>
 </template>
-
-<style scoped>
-.project-detail {
-  padding-block: 2.5rem 5rem;
-}
-
-.back-link {
-  display: inline-block;
-  margin-bottom: 2rem;
-  font-family: var(--font-mono);
-  color: var(--text-secondary);
-  font-size: 0.8rem;
-  transition: color 180ms ease;
-}
-
-.back-link:hover {
-  color: var(--text-primary);
-}
-
-.project-detail__header h1 {
-  margin: 0.5rem 0 1rem;
-  font-size: clamp(2.2rem, 6vw, 3.5rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-}
-
-.project-detail__summary {
-  max-width: 65ch;
-  color: var(--text-secondary);
-  font-size: 1.1rem;
-  line-height: 1.7;
-  margin-bottom: 1.75rem;
-}
-
-.project-detail__actions {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 3rem;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.65rem 1.25rem;
-  border-radius: var(--radius-sm);
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  text-decoration: none;
-  transition: opacity 180ms ease;
-}
-
-.btn--primary {
-  background: var(--text-primary);
-  color: var(--bg-base);
-}
-
-.btn--secondary {
-  border: 1px solid var(--border-subtle);
-  color: var(--text-primary);
-}
-
-.btn:hover {
-  opacity: 0.88;
-}
-
-.project-detail__section,
-.project-detail__media {
-  margin-top: 3.5rem;
-  padding-top: 2rem;
-  border-top: 1px solid var(--border-subtle);
-}
-
-.project-detail__section h2,
-.project-detail__media h2 {
-  margin-bottom: 1.25rem;
-  font-size: 1.35rem;
-  font-weight: 700;
-}
-
-.highlights-list {
-  display: grid;
-  gap: 0.85rem;
-  padding-left: 1.25rem;
-  color: var(--text-secondary);
-  line-height: 1.65;
-}
-
-.video-container video,
-.thumbnail-container img {
-  width: 100%;
-  max-height: 480px;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border-subtle);
-}
-
-.project-detail__footer {
-  margin-top: 4rem;
-}
-</style>

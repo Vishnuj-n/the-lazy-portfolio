@@ -10,21 +10,47 @@ defineProps({
 </script>
 
 <template>
-  <section v-if="certifications.length" id="credentials" class="portfolio-section certifications" aria-labelledby="certifications-title">
-    <header class="section-heading section-heading--compact">
-      <p class="section-heading__index">03 / Credentials</p>
-      <h2 id="certifications-title">Verified areas of study</h2>
-    </header>
+  <section v-if="certifications.length" id="credentials" class="px-6 md:px-8 py-16 md:py-20 max-w-5xl mx-auto" aria-labelledby="certifications-title">
+    <div class="flex items-center gap-3 mb-6">
+      <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground); letter-spacing: 0.12em;">
+        05
+      </span>
+      <div style="width: 24px; height: 1px; background: var(--muted-foreground); opacity: 0.4;" />
+      <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground); letter-spacing: 0.12em; text-transform: uppercase;">
+        Credentials & Study
+      </span>
+    </div>
 
-    <div class="certifications__grid" :class="{ 'certifications__grid--odd': certifications.length % 2 === 1 }">
-      <article v-for="(certification, index) in certifications" :key="certification.title" class="certification-card">
-        <CertificationLogo :certification="certification" />
-        <div>
-          <p class="certification-card__issuer">{{ certification.issuer }}</p>
-          <h3>{{ certification.title }}</h3>
+    <h2
+      id="certifications-title"
+      style="font-family: var(--font-display); font-size: clamp(28px, 4vw, 42px); font-weight: 600; letter-spacing: -0.025em; color: var(--foreground); margin-bottom: 32px;"
+    >
+      Verified areas of study
+    </h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div
+        v-for="(cert, index) in certifications"
+        :key="cert.title"
+        style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: border-color 0.15s; position: relative;"
+        class="hover:border-[rgba(200,245,66,0.2)] flex items-start gap-3.5"
+      >
+        <CertificationLogo :certification="cert" />
+        <div class="flex-1">
+          <p style="font-family: var(--font-sans); font-size: 12px; color: var(--primary); margin-bottom: 2px;">
+            {{ cert.issuer }}
+          </p>
+          <h3 style="font-family: var(--font-sans); font-weight: 600; font-size: 14px; color: var(--foreground); line-height: 1.35;">
+            {{ cert.title }}
+          </h3>
         </div>
-        <span class="certification-card__number" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span>
-      </article>
+        <span
+          style="font-family: var(--font-mono); font-size: 10px; color: var(--muted-foreground); position: absolute; top: 16px; right: 16px; opacity: 0.5;"
+          aria-hidden="true"
+        >
+          {{ String(index + 1).padStart(2, '0') }}
+        </span>
+      </div>
     </div>
   </section>
 </template>

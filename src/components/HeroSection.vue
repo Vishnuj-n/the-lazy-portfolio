@@ -5,60 +5,139 @@ const avatarFailed = ref(false);
 </script>
 
 <template>
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="hero__grid">
-      <div class="hero__content">
-        <p class="eyebrow">Software engineering student · Bengaluru</p>
-        <h1 id="hero-title">Vishnu J Narayanan</h1>
-        <p class="hero__summary">
-          Backend Systems & AI Applications Engineer building local-first software around real workflow friction, long-term learning retention, and developer automation.
+  <section class="px-6 md:px-8 pt-16 md:pt-20 pb-20 md:pb-24 max-w-5xl mx-auto" aria-labelledby="hero-title">
+    <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-10 md:gap-12">
+      <div class="flex-1">
+        <div class="flex items-center gap-3 mb-6 md:mb-8">
+          <span
+            style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--primary); text-transform: uppercase;"
+          >
+            Software Engineering Student
+          </span>
+          <span style="color: var(--muted-foreground)">·</span>
+          <span
+            style="font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--muted-foreground); text-transform: uppercase;"
+          >
+            Bengaluru
+          </span>
+        </div>
+
+        <h1
+          id="hero-title"
+          style="font-family: var(--font-display); font-size: clamp(48px, 7.5vw, 84px); font-weight: 700; line-height: 0.95; letter-spacing: -0.03em; color: var(--foreground); margin-bottom: 28px;"
+        >
+          Vishnu J<br />
+          <em style="font-style: italic; font-weight: 300;">Narayanan</em>
+        </h1>
+
+        <p
+          style="font-family: var(--font-sans); font-size: 15px; line-height: 1.7; color: var(--secondary-foreground); max-width: 520px; margin-bottom: 20px;"
+        >
+          Backend Systems & AI Applications Engineer building{' '}
+          <span style="color: var(--foreground); font-weight: 500;">local-first software</span>{' '}
+          around real workflow friction,{' '}
+          <span style="color: var(--foreground); font-weight: 500;">long-term learning retention</span>,
+          and developer automation.
         </p>
 
-        <ul class="hero__highlights">
-          <li>Computer Science (Data Science) @ Atria Institute of Technology (CGPA 8.76) & Minor in AI @ IIT Mandi.</li>
-          <li>Software Developer Intern @ Ellipsonic — Go, Python, PostgreSQL, REST APIs & Docker.</li>
-          <li>Technical Lead @ AIT AI Club | Cryptic 3.0 Hackathon Runner-up.</li>
-        </ul>
+        <div
+          class="flex flex-col gap-2 mb-10"
+          style="font-size: 13px; color: var(--muted-foreground); font-family: var(--font-sans);"
+        >
+          <p>
+            Computer Science (Data Science) @ Atria Institute of Technology{' '}
+            <span style="color: var(--primary); font-family: var(--font-mono);">(CGPA 8.76)</span> & Minor in AI @ IIT Mandi.
+          </p>
+          <p>
+            Software Developer Intern @{' '}
+            <span style="color: var(--foreground);">Ellipsonic</span> — Go, Python, PostgreSQL, REST APIs & Docker.
+          </p>
+          <p>
+            Technical Lead @{' '}
+            <span style="color: var(--foreground);">AIT AI Club</span>{' '}
+            <span style="color: var(--muted-foreground);">| Cryptic 3.0 Hackathon Runner-up.</span>
+          </p>
+        </div>
 
-        <div class="hero__actions">
-          <a href="#contact" class="btn btn--primary" aria-label="Get in touch">
-            <span>Contact Me</span>
+        <div class="flex items-center gap-3 flex-wrap">
+          <a
+            href="#contact"
+            style="font-family: var(--font-sans); font-size: 13px; font-weight: 500; padding: 9px 20px; background: var(--primary); color: var(--primary-foreground); border-radius: var(--radius); text-decoration: none; letter-spacing: 0.01em; transition: opacity 0.15s;"
+            class="hover:opacity-90"
+          >
+            Contact Me
           </a>
-          <a href="https://github.com/Vishnuj-n" target="_blank" rel="noreferrer" class="btn btn--secondary" aria-label="Download or view resume">
-            <span>View Résumé</span>
-            <svg class="btn-icon" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 16l-5-5h3V4h4v7h3l-5 5zm9 4H3v-2h18v2z"/></svg>
+          <a
+            href="https://github.com/Vishnuj-n"
+            target="_blank"
+            rel="noreferrer"
+            style="font-family: var(--font-sans); font-size: 13px; font-weight: 500; padding: 9px 20px; background: transparent; color: var(--foreground); border-radius: var(--radius); border: 1px solid var(--border); text-decoration: none; transition: border-color 0.15s;"
+            class="hover:border-[rgba(240,237,232,0.3)]"
+          >
+            View Résumé ↗
           </a>
 
-          <nav class="social-links" aria-label="Social profiles">
-            <a href="https://github.com/Vishnuj-n" target="_blank" rel="noreferrer" aria-label="GitHub profile">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .8a11.5 11.5 0 0 0-3.64 22.4c.58.1.79-.25.79-.56v-2.22c-3.22.7-3.9-1.36-3.9-1.36-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.57-.29-5.27-1.28-5.27-5.68 0-1.26.45-2.28 1.19-3.08-.12-.29-.52-1.46.11-3.04 0 0 .97-.31 3.16 1.18a10.94 10.94 0 0 1 5.76 0c2.19-1.49 3.15-1.18 3.15-1.18.63 1.58.23 2.75.11 3.04.74.8 1.19 1.82 1.19 3.08 0 4.41-2.71 5.38-5.29 5.67.42.36.79 1.06.79 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .8Z"/></svg>
+          <div class="flex items-center gap-2 ml-1">
+            <a
+              href="https://github.com/Vishnuj-n"
+              target="_blank"
+              rel="noreferrer"
+              title="GitHub"
+              style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--radius); border: 1px solid var(--border); color: var(--muted-foreground); transition: color 0.15s, border-color 0.15s;"
+              class="hover:text-[var(--foreground)] hover:border-[rgba(240,237,232,0.25)]"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-Width="1.8">
+                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
             </a>
-            <a href="https://linkedin.com/in/vishnu-jn" target="_blank" rel="noreferrer" aria-label="LinkedIn profile">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.3 7.8H1.7V22h3.6V7.8ZM3.5 2A2.1 2.1 0 1 0 3.5 6.2 2.1 2.1 0 0 0 3.5 2ZM22.3 13.8c0-4.3-2.3-6.3-5.4-6.3a4.7 4.7 0 0 0-4.2 2.3h-.1v-2H9.2V22h3.6v-7c0-1.9.4-3.7 2.7-3.7 2.3 0 2.3 2.1 2.3 3.8V22h3.6l.9-8.2Z"/></svg>
+            <a
+              href="https://linkedin.com/in/vishnu-jn"
+              target="_blank"
+              rel="noreferrer"
+              title="LinkedIn"
+              style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--radius); border: 1px solid var(--border); color: var(--muted-foreground); transition: color 0.15s, border-color 0.15s;"
+              class="hover:text-[var(--foreground)] hover:border-[rgba(240,237,232,0.25)]"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-Width="1.8">
+                <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z M4 6a2 2 0 100-4 2 2 0 000 4z" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
             </a>
-            <a href="mailto:vishnujn2005@gmail.com" aria-label="Email Vishnu">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 4.5h19A2.5 2.5 0 0 1 24 7v10a2.5 2.5 0 0 1-2.5 2.5h-19A2.5 2.5 0 0 1 0 17V7a2.5 2.5 0 0 1 2.5-2.5Zm0 2L12 13l9.5-6.5h-19ZM22 8.4l-9.4 6.4a1 1 0 0 1-1.2 0L2 8.4V17c0 .3.2.5.5.5h19c.3 0 .5-.2.5-.5V8.4Z"/></svg>
+            <a
+              href="mailto:vishnujn2005@gmail.com"
+              title="Email"
+              style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--radius); border: 1px solid var(--border); color: var(--muted-foreground); transition: color 0.15s, border-color 0.15s;"
+              class="hover:text-[var(--foreground)] hover:border-[rgba(240,237,232,0.25)]"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-Width="1.8">
+                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
             </a>
-          </nav>
+          </div>
         </div>
       </div>
 
-      <div class="hero__visual">
-        <div class="hero__avatar-frame" title="Vishnu J Narayanan">
+      <!-- Headshot portrait frame -->
+      <div class="flex-shrink-0">
+        <div
+          style="width: 160px; height: 200px; border-radius: 4px; overflow: hidden; border: 1px solid var(--border); background: #111111; position: relative;"
+        >
           <img
             v-if="!avatarFailed"
             src="/picture.png"
             alt="Vishnu J Narayanan"
-            class="hero__avatar-img"
+            style="width: 100%; height: 100%; object-fit: cover;"
             @error="avatarFailed = true"
           />
-          <div v-else class="hero__avatar-fallback" aria-hidden="true">
-            <span class="hero__avatar-initials">VN</span>
-            <span class="hero__avatar-badge">Go · Python · AI</span>
+          <div
+            v-else
+            class="flex flex-col items-center justify-center h-full p-4 text-center"
+            style="background: #161616;"
+          >
+            <span style="font-family: var(--font-display); font-size: 24px; font-weight: 600; color: var(--primary);">VN</span>
+            <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted-foreground); margin-top: 8px;">Go · Python · AI</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 </template>
-

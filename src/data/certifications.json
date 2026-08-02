@@ -1,7 +1,9 @@
 [
   {
     "title": "Oracle Cloud Infrastructure 2025 Generative AI Professional",
-    "issuer": "Oracle"
+    "issuer": "Oracle",
+    "slug": "oracle",
+    "color": "F80000"
   },
   {
     "title": "GitHub Foundations",
@@ -21,6 +23,8 @@
   },
   {
     "title": "AWS Solutions Architecture Job Simulation (Forage)",
-    "issuer": "Forage"
+    "issuer": "Forage",
+    "slug": "amazonwebservices",
+    "color": "FF9900"
   }
 ]
