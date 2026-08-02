@@ -28,12 +28,12 @@ defineProps({
       Verified areas of study
     </h2>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div class="flex flex-wrap gap-4 justify-center">
       <div
         v-for="(cert, index) in certifications"
         :key="cert.title"
         style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: border-color 0.15s; position: relative;"
-        class="hover:border-[rgba(200,245,66,0.2)] flex items-start gap-3.5"
+        class="hover:border-[rgba(200,245,66,0.2)] flex items-start gap-3.5 w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.67rem)]"
       >
         <CertificationLogo :certification="cert" />
         <div class="flex-1">

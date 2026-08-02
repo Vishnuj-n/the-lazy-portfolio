@@ -52,9 +52,10 @@ function formatDate(value) {
         v-for="(p, i) in projects"
         :key="p.repoName || p.title"
         data-testid="project-card"
-        style="background: var(--card); padding: 28px; transition: background 0.15s;"
+        style="background: var(--card); padding: 28px; transition: background 0.15s; cursor: pointer;"
         :style="{ borderBottom: i < projects.length - 1 ? '1px solid var(--border)' : 'none' }"
         class="hover:bg-[#161616] group"
+        @click="$router.push('/project/' + (p.repoName || p.title).toLowerCase())"
       >
         <div class="flex items-start justify-between gap-4 mb-3">
           <div>
@@ -71,6 +72,7 @@ function formatDate(value) {
             target="_blank"
             rel="noreferrer"
             style="font-family: var(--font-mono); font-size: 11px; color: var(--primary); text-decoration: none; white-space: nowrap; padding: 4px 10px; border: 1px solid rgba(200,245,66,0.3); border-radius: var(--radius); flex-shrink: 0;"
+            @click.stop
           >
             Source ↗
           </a>
