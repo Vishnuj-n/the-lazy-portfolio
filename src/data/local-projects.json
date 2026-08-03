@@ -2,17 +2,18 @@
   {
     "repoName": "studyloop",
     "title": "Study Workflow System (StudyLoop)",
-    "summary": "Local-first desktop application built with Go, Wails, React, SQLite, and FSRS focused on guided learning workflows, spaced repetition, and offline RAG.",
+    "summary": "Local-first desktop application built with Go, Wails, Vue 3, SQLite, and FSRS focused on guided learning workflows, spaced repetition, and offline RAG.",
     "category": "Educational Technology",
     "date": "2026-07",
     "tier": 1,
     "priority": 100,
-    "techStack": ["Go", "Wails", "React", "SQLite", "FSRS", "ONNX Runtime", "sqlite-vec"],
+    "techStack": ["Go", "Wails", "Vue 3", "SQLite", "sqlite-vec", "ONNX Runtime", "FSRS", "OpenAI API"],
     "highlights": [
-      "Architected a local-first desktop application focused on long-term learning retention.",
-      "Designed reading workflows integrating AI-generated quizzes, flashcards, and reinforcement-based review.",
-      "Implemented SQLite-backed persistence with FSRS scheduling for spaced repetition.",
-      "Structured the application around modular feature boundaries to improve maintainability."
+      "Driven by a persistent SQLite study queue enforcing deterministic priority ordering and crash-resilient session recovery.",
+      "Integrates FSRS (Free Spaced Repetition Scheduler) algorithm for optimal flashcard retention and review session management.",
+      "Uses ONNX Runtime local inference and sqlite-vec (vec0) for offline vector embeddings and topic-scoped RAG retrieval.",
+      "Built with Go backend desktop shell using Wails v2 and Vue 3 frontend with hash-based routing.",
+      "Implements a 2-strike Socratic rescue pipeline to remediate repeated quiz failures before unblocking progression."
     ]
   },
   {
@@ -23,12 +24,12 @@
     "date": "2026-06",
     "tier": 1,
     "priority": 95,
-    "techStack": ["Python", "FastAPI", "PydanticAI", "PostgreSQL", "pgvector", "WebSockets"],
+    "techStack": ["Python", "FastAPI", "PydanticAI", "PostgreSQL", "pgvector", "WebSockets", "Groq", "Cartesia", "Jina AI"],
     "highlights": [
-      "Spearheaded a modular voice-agent architecture using interchangeable adapters for Transport, STT, LLM, TTS, and Embedding providers.",
-      "Integrated a real-time speech pipeline connecting speech recognition, language models, streaming generation, and TTS synthesis.",
-      "Constructed domain-specific conversational agents supporting retrieval-augmented generation and tool-calling workflows.",
-      "Added telemetry, latency instrumentation, fallback handling, and turn-level observability."
+      "Architected a full-duplex WebSocket audio pipeline minimizing Time-To-First-Audio (TTFA) through sentence-boundary clause chunking.",
+      "Implemented real-time Voice Activity Detection (VAD) using Int16 PCM energy RMS sliding-window thresholding and silence windowing.",
+      "Spearheaded modular provider adapters for STT (Groq Whisper), LLM (Groq Llama 3.3 70B), TTS (Cartesia Sonic), and Embeddings (Jina AI).",
+      "Integrated vector similarity search using Jina AI text embeddings and pgvector for domain-specific RAG retrieval."
     ]
   },
   {
@@ -39,12 +40,12 @@
     "date": "2026-05",
     "tier": 1,
     "priority": 90,
-    "techStack": ["TypeScript", "Express", "Next.js", "Prisma", "PostgreSQL", "Supabase", "Nx", "Docker"],
+    "techStack": ["TypeScript", "Express", "Next.js", "Prisma", "PostgreSQL", "Supabase", "Nx", "Docker", "Zod", "Pino"],
     "highlights": [
-      "Contributed to an API-first wallet management platform for wallet operations, transaction history, and audit logging.",
-      "Maintained services within an Nx monorepo containing an Express API, customer web application, and administrative dashboard.",
-      "Engineered features involving tenant-based authentication, scoped API keys, session tokens, and REST APIs.",
-      "Enforced immutable transaction workflows, idempotent write operations, and audit logging."
+      "Engineered pessimistic locking (SELECT FOR UPDATE) with lexicographic lock ordering to prevent double-spending and deadlocks under concurrent writes.",
+      "Architected a three-app Nx monorepo (Express API, Next.js user UI, Next.js admin dashboard) with isolated auth boundaries.",
+      "Enforced 30-day write idempotency, request fingerprinting, and database-level write/update revocation on immutable audit logs.",
+      "Built an asynchronous webhook delivery subsystem featuring HMAC-SHA256 signing, DNS-based SSRF protection, and circuit breakers."
     ]
   },
   {
@@ -55,42 +56,44 @@
     "date": "2026-04",
     "tier": 2,
     "priority": 85,
-    "techStack": ["Go", "Git", "Python", "npm", "CLI"],
+    "techStack": ["Go", "Cobra", "YAML", "Git", "Python", "uv", "npm", "PowerShell"],
     "highlights": [
-      "Automates project initialization from reusable templates by orchestrating ecosystem tools such as Git, Python, uv, and npm.",
-      "Introduced a template-driven workflow supporting project-local and global templates for consistent project setup.",
-      "Designed predictable command execution that runs native development tools rather than generating project scaffolding.",
-      "Published the tool through GitHub Releases with Windows-friendly installation and distribution."
+      "Architected a zero-dependency Go binary executing ecosystem binaries directly via native process calls to eliminate shell injection risks.",
+      "Designed an isolated dry-run workspace testing framework (forge test) enabling validation of template workflows in temporary workspaces.",
+      "Built atomic remote template distribution pipelines (forge pull) with ZIP stream inspection and volume-aware cross-drive fallback mechanisms.",
+      "Implemented non-blocking background binary self-deletion and PowerShell-based PATH environment updates on Windows."
     ]
   },
   {
     "repoName": "mind-palace",
     "title": "Mind Palace Study Tool",
-    "summary": "AI-assisted study application utilizing retrieval-augmented generation (RAG) and local vector databases with Python, Streamlit, and LangChain.",
+    "summary": "AI-assisted study application utilizing retrieval-augmented generation (RAG) and local vector databases with Python, Streamlit, and MongoDB.",
     "category": "AI Applications & EdTech",
     "date": "2026-02",
     "tier": 2,
     "priority": 80,
-    "techStack": ["Python", "Streamlit", "LangChain", "RAG", "Vector Databases"],
+    "techStack": ["Python", "Streamlit", "ONNX Runtime", "MongoDB", "Groq", "PyPDF2", "RAG"],
     "highlights": [
-      "Developed an AI-assisted study application exploring retrieval-augmented generation and adaptive learning workflows.",
-      "Integrated semantic retrieval using local vector databases.",
-      "Served as the structural foundation for the later Study Workflow System."
+      "Implemented an on-device RAG engine using INT8-quantized ONNX models (nomic-embed-text-v1.5) and ONNX Runtime CPU inference for zero-cost search.",
+      "Architected a single-document NoSQL schema in MongoDB aggregating PDF text, sentence vector caches, flashcards, and gamified progress tracking.",
+      "Built topic-aware context window slicing to dynamically pass top-k semantically relevant sentence chunks into Groq LLM prompts.",
+      "Developed a Socratic AI Tutor & Quiz Generator with regex-assisted JSON parsing and adaptive study schedule generators."
     ]
   },
   {
     "repoName": "focus-play",
     "title": "FocusPlay",
-    "summary": "Desktop productivity application combining a Pomodoro timer with an integrated music player, built using Go and Wails.",
+    "summary": "Desktop Pomodoro productivity application with glassmorphic UI, custom audio playback, session persistence, and profile management built using Go and Wails.",
     "category": "Productivity Applications",
     "date": "2026-01",
     "tier": 3,
     "priority": 75,
-    "techStack": ["Go", "Wails", "JavaScript", "CSS"],
+    "techStack": ["Go", "Wails", "JavaScript", "CSS", "gopxl/beep"],
     "highlights": [
-      "Assembled a desktop productivity application combining a Pomodoro timer with an integrated music player.",
-      "Targeted distraction reduction and personal focus workflows.",
-      "Crafted a lightweight cross-platform desktop application using Go and Wails."
+      "Architected a desktop application using Go (Wails v2) and Vanilla JS/CSS for a glassmorphic UI with a lightweight 6MB binary footprint.",
+      "Built a concurrent audio engine in Go using gopxl/beep featuring thread-safe volume gain control, gapless looping, and directory shuffling.",
+      "Engineered crash-resilient session persistence with atomic file writes and 24-hour expiration checkpoints for session recovery.",
+      "Implemented an event-driven IPC system using Go goroutines and Wails event emitters for 60 FPS timer rendering."
     ]
   }
 ]

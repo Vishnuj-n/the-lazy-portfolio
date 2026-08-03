@@ -1,5 +1,14 @@
 <script setup>
-const STACK = [
+import { computed } from 'vue';
+
+const props = defineProps({
+  extraCategories: {
+    type: Array,
+    default: () => [],
+  },
+});
+
+const BASE_STACK = [
   {
     category: 'Backend & Systems',
     desc: 'Core languages, APIs, and data stores built for reliability and throughput',
@@ -16,6 +25,8 @@ const STACK = [
     tags: ['FSRS Spaced Repetition', 'RAG Pipelines', 'sqlite-vec', 'ONNX Runtime', 'LangChain'],
   },
 ];
+
+const fullStack = computed(() => [...BASE_STACK, ...(props.extraCategories || [])]);
 </script>
 
 <template>
@@ -42,27 +53,45 @@ const STACK = [
 
     <div class="flex flex-wrap gap-4 justify-center">
       <div
-        v-for="s in STACK"
-        :key="s.category"
-        style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; transition: border-color 0.15s;"
+        v-for="(s, idx) in fullStack"
+        :key="s.id || s.category || idx"
+        :style="s.isPlaceholder ? 'background: transparent; border: 1px dashed rgba(255,255,255,0.25); border-radius: var(--radius); padding: 24px;' : 'background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; transition: border-color 0.15s;'"
         class="hover:border-[rgba(200,245,66,0.2)] w-full sm:w-[calc(50%-0.5rem)] md:w-auto md:flex-[1_1_calc(33.333%-0.67rem)]"
       >
-        <h3 style="font-family: var(--font-sans); font-weight: 600; font-size: 14px; color: var(--foreground); margin-bottom: 8px;">
-          {{ s.category }}
-        </h3>
-        <p style="font-family: var(--font-sans); font-size: 12.5px; color: var(--muted-foreground); line-height: 1.6; margin-bottom: 16px;">
-          {{ s.desc }}
-        </p>
-        <div class="flex flex-wrap gap-2">
-          <span
-            v-for="t in s.tags"
-            :key="t"
-            class="inline-block px-2.5 py-0.5 text-xs rounded-sm border"
-            style="font-family: var(--font-mono); background: rgba(200,245,66,0.06); border-color: rgba(200,245,66,0.18); color: #c8f542; letter-spacing: 0.02em;"
-          >
-            {{ t }}
-          </span>
-        </div>
+        <template v-if="s.isPlaceholder">
+          <h3 style="font-family: var(--font-sans); font-weight: 600; font-size: 14px; color: var(--muted-foreground); opacity: 0.7; margin-bottom: 8px;">
+            [Empty Stack Slot]
+          </h3>
+          <p style="font-family: var(--font-sans); font-size: 12.5px; color: var(--muted-foreground); opacity: 0.4; line-height: 1.6; margin-bottom: 16px;">
+            Testing 3-column wrapping symmetry for technical capabilities section.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span
+              class="inline-block px-2.5 py-0.5 text-xs rounded-sm border"
+              style="font-family: var(--font-mono); background: rgba(255,255,255,0.03); border-color: rgba(255,255,255,0.1); color: var(--muted-foreground); letter-spacing: 0.02em;"
+            >
+              Placeholder
+            </span>
+          </div>
+        </template>
+        <template v-else>
+          <h3 style="font-family: var(--font-sans); font-weight: 600; font-size: 14px; color: var(--foreground); margin-bottom: 8px;">
+            {{ s.category }}
+          </h3>
+          <p style="font-family: var(--font-sans); font-size: 12.5px; color: var(--muted-foreground); line-height: 1.6; margin-bottom: 16px;">
+            {{ s.desc }}
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span
+              v-for="t in s.tags"
+              :key="t"
+              class="inline-block px-2.5 py-0.5 text-xs rounded-sm border"
+              style="font-family: var(--font-mono); background: rgba(200,245,66,0.06); border-color: rgba(200,245,66,0.18); color: #c8f542; letter-spacing: 0.02em;"
+            >
+              {{ t }}
+            </span>
+          </div>
+        </template>
       </div>
     </div>
   </section>

@@ -31,19 +31,32 @@ defineProps({
     <div class="flex flex-wrap gap-4 justify-center">
       <div
         v-for="(cert, index) in certifications"
-        :key="cert.title"
-        style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: border-color 0.15s; position: relative;"
+        :key="cert.id || cert.title || index"
+        :style="cert.isPlaceholder ? 'background: transparent; border: 1px dashed rgba(255,255,255,0.25); border-radius: var(--radius); padding: 20px; position: relative;' : 'background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: border-color 0.15s; position: relative;'"
         class="hover:border-[rgba(200,245,66,0.2)] flex items-start gap-3.5 w-full sm:w-[calc(50%-0.5rem)] md:w-auto md:flex-[1_1_calc(33.333%-0.67rem)]"
       >
-        <CertificationLogo :certification="cert" />
-        <div class="flex-1">
-          <p style="font-family: var(--font-sans); font-size: 12px; color: var(--primary); margin-bottom: 2px;">
-            {{ cert.issuer }}
-          </p>
-          <h3 style="font-family: var(--font-sans); font-weight: 600; font-size: 14px; color: var(--foreground); line-height: 1.35;">
-            {{ cert.title }}
-          </h3>
-        </div>
+        <template v-if="cert.isPlaceholder">
+          <div style="width: 36px; height: 36px; border-radius: 6px; border: 1px dashed var(--muted-foreground); opacity: 0.4;" />
+          <div class="flex-1">
+            <p style="font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground); opacity: 0.6;">
+              [Empty Cert Slot]
+            </p>
+            <h3 style="font-family: var(--font-sans); font-size: 13px; color: var(--muted-foreground); opacity: 0.4; line-height: 1.35;">
+              Testing Grid Symmetry
+            </h3>
+          </div>
+        </template>
+        <template v-else>
+          <CertificationLogo :certification="cert" />
+          <div class="flex-1">
+            <p style="font-family: var(--font-sans); font-size: 12px; color: var(--primary); margin-bottom: 2px;">
+              {{ cert.issuer }}
+            </p>
+            <h3 style="font-family: var(--font-sans); font-weight: 600; font-size: 14px; color: var(--foreground); line-height: 1.35;">
+              {{ cert.title }}
+            </h3>
+          </div>
+        </template>
         <span
           style="font-family: var(--font-mono); font-size: 10px; color: var(--muted-foreground); position: absolute; top: 16px; right: 16px; opacity: 0.5;"
           aria-hidden="true"
