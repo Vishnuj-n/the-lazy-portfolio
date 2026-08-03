@@ -160,20 +160,36 @@ export async function processIssueIntake({
   let parsedData = null;
   let entityType = null;
 
-  if (isCredential || isExperience) {
-    parsedData = parseTemplateBody(issueBody);
-    entityType = isCredential ? 'certification' : 'experience';
-  } else if (isAI || !parsedData) {
-    const schemaDesc = `
+  // 1. Try static template parsing first for any issue
+  parsedData = parseTemplateBody(issueBody);
+
+  if (isCredential) {
+    entityType = 'certification';
+  } else if (isExperience) {
+    entityType = 'experience';
+  } else if (parsedData) {
+    // Auto-detect entity type from parsed fields if labels are missing
+    if (parsedData.title || parsedData.issuer) {
+      entityType = 'certification';
+    } else if (parsedData.company || parsedData.role) {
+      entityType = 'experience';
+    }
+  }
+
+  // 2. Only fall back to LLM if static parsing failed OR if explicitly labeled intake:ai
+  if (!parsedData || !entityType || isAI) {
+    if (isAI || !parsedData) {
+      const schemaDesc = `
 Entity types:
 1. "certification": { "action": "create"|"update", "title": string, "issuer": string, "slug"?: string, "color"?: string }
 2. "experience": { "action": "create"|"update", "company"?: string, "organization"?: string, "role": string, "period": string, "location": string, "highlights": string[] }
 
 Return JSON object: { "entityType": "certification"|"experience", "data": <entity_object> }`;
 
-    const result = await callOpenAICompatibleLLM({ prompt: issueBody, schemaDescription: schemaDesc, fetchImpl, env });
-    entityType = result.entityType;
-    parsedData = result.data;
+      const result = await callOpenAICompatibleLLM({ prompt: issueBody, schemaDescription: schemaDesc, fetchImpl, env });
+      entityType = result.entityType;
+      parsedData = result.data;
+    }
   }
 
   if (!parsedData || !entityType) {
