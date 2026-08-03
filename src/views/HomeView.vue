@@ -7,11 +7,12 @@ import TierOneProjects from '../components/TierOneProjects.vue';
 import TierTwoProjects from '../components/TierTwoProjects.vue';
 import CertificationGrid from '../components/CertificationGrid.vue';
 import WorkExperience from '../components/WorkExperience.vue';
+import EducationSection from '../components/EducationSection.vue';
 import ContactSection from '../components/ContactSection.vue';
 import projectsData from '../data/projects.json';
 import certificationsData from '../data/certifications.json';
 import experienceData from '../data/experience.json';
-import { MOCK_PROJECT_MEDIA } from '../data/mockData.js';
+import educationData from '../data/education.json';
 
 const isDev = import.meta.env.DEV || new URLSearchParams(window.location.search).has('mock');
 const showMocks = ref(false);
@@ -22,14 +23,7 @@ const dummyProjectsCount = ref(1);
 const dummyStackCount = ref(1);
 
 const projects = computed(() => {
-  const list = Array.isArray(projectsData) ? [...projectsData] : [];
-  if (!showMocks.value) return list;
-  return list.map((p, idx) => {
-    if (idx === 0) {
-      return { ...p, media: MOCK_PROJECT_MEDIA };
-    }
-    return p;
-  });
+  return Array.isArray(projectsData) ? [...projectsData] : [];
 });
 
 const certifications = computed(() => {
@@ -51,6 +45,7 @@ const extraStack = computed(() => {
 });
 
 const experience = Array.isArray(experienceData) ? experienceData : [];
+const education = Array.isArray(educationData) ? educationData : [];
 const tierOneProjects = computed(() => projects.value.filter((project) => Number(project.tier) === 1));
 
 const tierTwoProjects = computed(() => {
@@ -73,7 +68,7 @@ const tierTwoProjects = computed(() => {
   />
 
   <div>
-    <!-- Floating Dev Mock Panel & Toggle (Only visible in Dev Mode or with ?mock=true) -->
+    <!-- Floating Dev Controls & Toggle (Only visible in Dev Mode or with ?mock=true) -->
     <div
       v-if="isDev"
       style="position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; align-items: flex-end; gap: 8px;"
@@ -143,10 +138,11 @@ const tierTwoProjects = computed(() => {
 
     <main id="main-content">
       <WorkExperience :experience="experience" />
+      <EducationSection :education="education" />
       <TechStack :extra-categories="extraStack" />
-      <TierOneProjects :projects="tierOneProjects.value || tierOneProjects" />
-      <TierTwoProjects :projects="tierTwoProjects.value || tierTwoProjects" />
-      <CertificationGrid :certifications="certifications.value || certifications" />
+      <TierOneProjects :projects="tierOneProjects" />
+      <TierTwoProjects :projects="tierTwoProjects" />
+      <CertificationGrid :certifications="certifications" />
       <ContactSection />
     </main>
   </div>

@@ -3,22 +3,15 @@ import { computed } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
 import projectsData from '../data/projects.json';
 
-import { MOCK_PROJECT_MEDIA } from '../data/mockData.js';
-
 const route = useRoute();
 const projectId = route.params.id;
 
 const isDev = import.meta.env.DEV || new URLSearchParams(window.location.search).has('mock');
 
 const project = computed(() => {
-  const found = (projectsData || []).find(
+  return (projectsData || []).find(
     (p) => (p.repoName || '').toLowerCase() === (projectId || '').toLowerCase()
   ) || projectsData[0];
-
-  if (isDev && (!found.media || !Object.keys(found.media).length)) {
-    return { ...found, media: MOCK_PROJECT_MEDIA };
-  }
-  return found;
 });
 
 function getYouTubeEmbedUrl(url) {

@@ -10,8 +10,9 @@ const props = defineProps({
 const activeNav = ref('');
 
 const links = computed(() => [
-  { label: 'Stack', href: '#stack' },
   { label: 'Work', href: '#experience' },
+  { label: 'Education', href: '#education' },
+  { label: 'Stack', href: '#stack' },
   { label: 'Projects', href: '#selected-work', show: props.hasSelectedWork || props.hasProjects },
   { label: 'Credentials', href: '#credentials', show: props.hasCredentials },
   { label: 'Contact', href: '#contact' },

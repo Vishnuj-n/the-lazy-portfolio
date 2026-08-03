@@ -1,0 +1,41 @@
+[
+  {
+    "id": "atria-cs-ds",
+    "institution": "Atria Institute of Technology",
+    "degree": "Bachelor of Engineering in Computer Science (Data Science)",
+    "period": "2023 – Oct 2027 (Ongoing)",
+    "location": null,
+    "score": "GPA 8.71",
+    "isPrimary": true,
+    "coursework": [
+      "DSA",
+      "DBMS",
+      "MongoDB",
+      "Math",
+      "C",
+      "Java",
+      "OS",
+      "Computer Networks",
+      "NLP",
+      "Data Warehouse",
+      "Big Data Analytics",
+      "Machine Learning",
+      "Generative AI"
+    ]
+  },
+  {
+    "id": "iit-mandi-ai-minor",
+    "institution": "IIT Mandi",
+    "degree": "Minor in Artificial Intelligence",
+    "period": "2024 – Present (Ongoing)",
+    "location": null,
+    "score": "Ongoing",
+    "isPrimary": false,
+    "coursework": [
+      "Python for AI & DS",
+      "Math for AI",
+      "Deep Learning",
+      "Artificial Intelligence"
+    ]
+  }
+]
