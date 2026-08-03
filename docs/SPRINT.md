@@ -68,21 +68,15 @@ Build and deploy a zero-maintenance, automated developer portfolio powered by Vi
 
 ---
 
-### Sprint 8: V1.5 Agent Ingestion Blueprint & Master Resume Sync
-- [X] **Task 8.1:** Create `master_resume.md` single-source-of-truth document.
-- [ ] **Task 8.2:** Craft Master Resume Prompt template for LLMs to generate `portfolio.json` files.
-- [ ] **Task 8.3:** Write step-by-step developer guide for populating project manifests via AI coding agents.
+### Sprint 8: V2 Portfolio Agent Skill & Manifest Verification (Completed)
+- [x] **Task 8.1:** Build custom agent skill for `"Add this project to my portfolio"`.
+- [x] **Task 8.2:** Develop cross-platform schema verification & generator script for `PORTFOLIO.json`.
 
 ---
 
-### Sprint 9: V2 Portfolio Agent Skill ("Add project to portfolio")
-- [ ] **Task 9.1:** Build custom agent skill for `"Add this project to my portfolio"`.
-- [ ] **Task 9.2:** Develop automated codebase inspector and `PORTFOLIO.json` generator script.
+### Sprint 9: V3 Workflow Automation & AI GitHub Actions
+- [ ] **Task 9.1:** Define GitHub Issue templates for project/credential intake.
+- [ ] **Task 9.2:** Create issue/PR parser script to update local stores.
+- [ ] **Task 9.3:** Setup `.github/workflows/portfolio-sync.yml` weekly cron sync & Vercel Deploy Hook.
+- [ ] **Task 9.4:** Optional AI GitHub Action pipeline for automated issue processing and pull requests.
 
----
-
-### Sprint 10: V3 Workflow Automation & AI GitHub Actions
-- [ ] **Task 10.1:** Define GitHub Issue templates for project/credential intake.
-- [ ] **Task 10.2:** Create issue/PR parser script to update local stores.
-- [ ] **Task 10.3:** Setup `.github/workflows/portfolio-sync.yml` weekly cron sync & Vercel Deploy Hook.
-- [ ] **Task 10.4:** Optional AI GitHub Action pipeline for automated issue processing and pull requests.
