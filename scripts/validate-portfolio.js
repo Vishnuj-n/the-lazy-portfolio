@@ -8,9 +8,9 @@ import { main, validateManifest, loadManifest } from '../.agents/skills/add-to-p
 
 export { validateManifest, loadManifest, main };
 
-main().then((exitCode) => {
-  process.exitCode = exitCode;
-}).catch((error) => {
+try {
+  process.exitCode = await main();
+} catch (error) {
   console.error(error);
   process.exitCode = 1;
-});
+}

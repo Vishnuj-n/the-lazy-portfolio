@@ -46,8 +46,13 @@ export function githubHeaders(token = process.env.GITHUB_PAT) {
 function nextLink(linkHeader) {
   if (!linkHeader) return null;
   for (const part of linkHeader.split(',')) {
-    const match = part.match(/<([^>]+)>;\s*rel="([^"]+)"/);
-    if (match?.[2] === 'next') return match[1];
+    const semicolonIdx = part.indexOf(';');
+    if (semicolonIdx === -1) continue;
+    const urlPart = part.slice(0, semicolonIdx).trim();
+    const relPart = part.slice(semicolonIdx + 1).trim();
+    if (relPart === 'rel="next"' && urlPart.startsWith('<') && urlPart.endsWith('>')) {
+      return urlPart.slice(1, -1);
+    }
   }
   return null;
 }
@@ -270,8 +275,10 @@ export async function main() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  main().catch((error) => {
+  try {
+    await main();
+  } catch (error) {
     console.error(error);
     process.exitCode = 1;
-  });
+  }
 }

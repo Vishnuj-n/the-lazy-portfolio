@@ -80,16 +80,16 @@ const tierTwoProjects = computed(() => {
       >
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">
           <span style="font-size: 11px; font-weight: 600; color: var(--primary);">🛠️ DUMMY BLOCK CONTROLS</span>
-          <button style="background: none; border: none; color: var(--muted-foreground); cursor: pointer; font-size: 12px;" @click="showPanel = false">✕</button>
+          <button type="button" style="background: none; border: none; color: var(--muted-foreground); cursor: pointer; font-size: 12px;" @click="showPanel = false">✕</button>
         </div>
 
         <!-- Tech Stack Counter -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
           <span style="font-size: 11px; color: var(--foreground);">Stack Blocks:</span>
           <div style="display: flex; align-items: center; gap: 6px;">
-            <button style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyStackCount = Math.max(0, dummyStackCount - 1)">-</button>
+            <button type="button" style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyStackCount = Math.max(0, dummyStackCount - 1)">-</button>
             <span style="font-size: 11px; color: var(--primary); min-width: 16px; text-align: center;">{{ dummyStackCount }}</span>
-            <button style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyStackCount++">+</button>
+            <button type="button" style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyStackCount++">+</button>
           </div>
         </div>
 
@@ -97,9 +97,9 @@ const tierTwoProjects = computed(() => {
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
           <span style="font-size: 11px; color: var(--foreground);">Projects (Tier 2):</span>
           <div style="display: flex; align-items: center; gap: 6px;">
-            <button style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyProjectsCount = Math.max(0, dummyProjectsCount - 1)">-</button>
+            <button type="button" style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyProjectsCount = Math.max(0, dummyProjectsCount - 1)">-</button>
             <span style="font-size: 11px; color: var(--primary); min-width: 16px; text-align: center;">{{ dummyProjectsCount }}</span>
-            <button style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyProjectsCount++">+</button>
+            <button type="button" style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyProjectsCount++">+</button>
           </div>
         </div>
 
@@ -107,9 +107,9 @@ const tierTwoProjects = computed(() => {
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <span style="font-size: 11px; color: var(--foreground);">Certs Blocks:</span>
           <div style="display: flex; align-items: center; gap: 6px;">
-            <button style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyCertsCount = Math.max(0, dummyCertsCount - 1)">-</button>
+            <button type="button" style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyCertsCount = Math.max(0, dummyCertsCount - 1)">-</button>
             <span style="font-size: 11px; color: var(--primary); min-width: 16px; text-align: center;">{{ dummyCertsCount }}</span>
-            <button style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyCertsCount++">+</button>
+            <button type="button" style="background: #222; border: 1px solid #444; color: #fff; width: 22px; height: 22px; border-radius: 4px; cursor: pointer;" @click="dummyCertsCount++">+</button>
           </div>
         </div>
       </div>

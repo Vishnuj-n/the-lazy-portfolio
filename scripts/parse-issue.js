@@ -10,14 +10,14 @@ export function extractImageUrls(text) {
   const urls = new Set();
   
   // Markdown images: ![alt](url)
-  const mdRegex = /!\[.*?\]\((https?:\/\/[^\s\)]+)\)/g;
+  const mdRegex = /!\[[^\]]*\]\((https?:\/\/[^\s)]+)\)/g;
   let match;
   while ((match = mdRegex.exec(text)) !== null) {
     urls.add(match[1]);
   }
 
   // Direct URLs or GitHub attachments
-  const urlRegex = /(https?:\/\/(?:github\.com\/user-attachments\/assets\/[^\s\)]+|user-images\.githubusercontent\.com\/[^\s\)]+|[^\s<"']+?\.(?:png|jpg|jpeg|gif|webp|svg)))/gi;
+  const urlRegex = /(https?:\/\/(?:github\.com\/user-attachments\/assets\/[^\s)]+|user-images\.githubusercontent\.com\/[^\s)]+|[^\s<"']+?\.(?:png|jpg|jpeg|gif|webp|svg)))/gi;
   while ((match = urlRegex.exec(text)) !== null) {
     urls.add(match[1]);
   }
@@ -84,7 +84,8 @@ export function validateExperience(exp) {
 }
 
 export async function callOpenAICompatibleLLM({ prompt, schemaDescription, fetchImpl = fetch, env = process.env }) {
-  const baseUrl = (env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/+$/, '');
+  let baseUrl = env.OPENAI_BASE_URL || 'https://api.openai.com/v1';
+  while (baseUrl.endsWith('/')) baseUrl = baseUrl.slice(0, -1);
   const apiKey = env.OPENAI_API_KEY;
   const model = env.OPENAI_MODEL || 'gpt-4o-mini';
 
@@ -127,7 +128,13 @@ Output ONLY raw valid JSON. Do not include markdown code block backticks.`;
 
     const resJson = await response.json();
     const rawContent = resJson.choices?.[0]?.message?.content?.trim() || '';
-    const cleanJsonStr = rawContent.replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/\s*```$/, '').trim();
+    let cleanJsonStr = rawContent;
+    if (cleanJsonStr.startsWith('```')) {
+      cleanJsonStr = cleanJsonStr.replace(/^```(?:json)?\s*/i, '');
+      if (cleanJsonStr.endsWith('```')) {
+        cleanJsonStr = cleanJsonStr.slice(0, -3).trim();
+      }
+    }
 
     try {
       const parsed = JSON.parse(cleanJsonStr);
@@ -156,9 +163,10 @@ async function upsertCertification(parsedData, certPath) {
 
   if (action === 'update' && existingIndex !== -1) {
     certs[existingIndex] = { ...certs[existingIndex], ...cleanCert };
+  } else if (existingIndex !== -1) {
+    certs[existingIndex] = cleanCert;
   } else {
-    if (existingIndex !== -1) certs[existingIndex] = cleanCert;
-    else certs.push(cleanCert);
+    certs.push(cleanCert);
   }
 
   await writeFile(certPath, JSON.stringify(certs, null, 2) + '\n', 'utf8');
@@ -181,9 +189,10 @@ async function upsertExperience(parsedData, expPath) {
 
   if (action === 'update' && existingIndex !== -1) {
     exps[existingIndex] = { ...exps[existingIndex], ...cleanExp };
+  } else if (existingIndex !== -1) {
+    exps[existingIndex] = cleanExp;
   } else {
-    if (existingIndex !== -1) exps[existingIndex] = cleanExp;
-    else exps.push(cleanExp);
+    exps.push(cleanExp);
   }
 
   await writeFile(expPath, JSON.stringify(exps, null, 2) + '\n', 'utf8');
@@ -265,5 +274,10 @@ export async function main() {
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
-  main();
+  try {
+    await main();
+  } catch (error) {
+    console.error(error);
+    process.exitCode = 1;
+  }
 }

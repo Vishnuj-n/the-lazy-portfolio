@@ -39,7 +39,7 @@ const initials = computed(() =>
       decoding="async"
       @error="imageFailed = true"
     />
-    <div v-else class="project-media__placeholder" role="img" :aria-label="`${title} monogram preview`">
+    <figure v-else class="project-media__placeholder" :aria-label="`${title} monogram preview`">
       <svg class="project-media__noise" aria-hidden="true">
         <filter id="noiseFilter">
           <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
@@ -51,6 +51,6 @@ const initials = computed(() =>
       <span class="project-media__orbit project-media__orbit--secondary" aria-hidden="true"></span>
       <span class="project-media__initials">{{ initials }}</span>
       <span class="project-media__label">Image not supplied</span>
-    </div>
+    </figure>
   </div>
 </template>
