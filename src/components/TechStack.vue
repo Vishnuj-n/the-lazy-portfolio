@@ -40,12 +40,12 @@ const STACK = [
       Categorised focus areas spanning backend architecture, AI application engines, and developer automation.
     </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="flex flex-wrap gap-4 justify-center">
       <div
         v-for="s in STACK"
         :key="s.category"
         style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; transition: border-color 0.15s;"
-        class="hover:border-[rgba(200,245,66,0.2)]"
+        class="hover:border-[rgba(200,245,66,0.2)] w-full sm:w-[calc(50%-0.5rem)] md:w-auto md:flex-[1_1_calc(33.333%-0.67rem)]"
       >
         <h3 style="font-family: var(--font-sans); font-weight: 600; font-size: 14px; color: var(--foreground); margin-bottom: 8px;">
           {{ s.category }}

@@ -33,7 +33,7 @@ defineProps({
         v-for="(cert, index) in certifications"
         :key="cert.title"
         style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; transition: border-color 0.15s; position: relative;"
-        class="hover:border-[rgba(200,245,66,0.2)] flex items-start gap-3.5 w-full sm:w-[calc(50%-0.5rem)] md:w-[calc(33.333%-0.67rem)]"
+        class="hover:border-[rgba(200,245,66,0.2)] flex items-start gap-3.5 w-full sm:w-[calc(50%-0.5rem)] md:w-auto md:flex-[1_1_calc(33.333%-0.67rem)]"
       >
         <CertificationLogo :certification="cert" />
         <div class="flex-1">

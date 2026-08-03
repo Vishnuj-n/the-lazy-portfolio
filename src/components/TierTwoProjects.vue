@@ -46,13 +46,13 @@ function formatDate(value) {
       Smaller systems, experiments, and tools built to answer a specific need.
     </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div class="flex flex-wrap gap-4 justify-center">
       <div
         v-for="(p, i) in projects"
         :key="p.repoName || p.title"
         data-testid="project-card"
         style="background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; transition: border-color 0.15s; cursor: pointer;"
-        class="hover:border-[rgba(200,245,66,0.2)] group"
+        class="hover:border-[rgba(200,245,66,0.2)] group w-full md:w-auto md:flex-[1_1_calc(50%-0.5rem)]"
         @click="$router.push('/project/' + (p.repoName || p.title).toLowerCase())"
       >
         <div class="flex items-start justify-between gap-4 mb-3">

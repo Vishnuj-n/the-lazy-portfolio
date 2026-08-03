@@ -3,14 +3,39 @@ import { computed } from 'vue';
 import { useRoute, RouterLink } from 'vue-router';
 import projectsData from '../data/projects.json';
 
+import { MOCK_PROJECT_MEDIA } from '../data/mockData.js';
+
 const route = useRoute();
 const projectId = route.params.id;
 
+const isDev = import.meta.env.DEV || new URLSearchParams(window.location.search).has('mock');
+
 const project = computed(() => {
-  return (projectsData || []).find(
+  const found = (projectsData || []).find(
     (p) => (p.repoName || '').toLowerCase() === (projectId || '').toLowerCase()
   ) || projectsData[0];
+
+  if (isDev && (!found.media || !Object.keys(found.media).length)) {
+    return { ...found, media: MOCK_PROJECT_MEDIA };
+  }
+  return found;
 });
+
+function getYouTubeEmbedUrl(url) {
+  if (!url) return '';
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname.includes('youtube.com')) {
+      const v = parsed.searchParams.get('v');
+      if (v) return `https://www.youtube-nocookie.com/embed/${v}?autoplay=0&rel=0`;
+    }
+    if (parsed.hostname.includes('youtu.be')) {
+      const id = parsed.pathname.replace('/', '');
+      if (id) return `https://www.youtube-nocookie.com/embed/${id}?autoplay=0&rel=0`;
+    }
+  } catch {}
+  return '';
+}
 </script>
 
 <template>
@@ -61,15 +86,76 @@ const project = computed(() => {
     </header>
 
     <!-- Media Section -->
-    <section v-if="project.media" class="pt-8 mb-12" style="border-top: 1px solid var(--border);">
-      <h2 style="font-family: var(--font-display); font-size: 20px; font-weight: 600; color: var(--foreground); margin-bottom: 16px;">
-        Media & Showcase
-      </h2>
-      <div v-if="project.media.videoDemo" class="mb-4 rounded overflow-hidden" style="border: 1px solid var(--border);">
-        <video controls autoplay loop muted :src="project.media.videoDemo" class="w-full max-h-[480px] object-cover"></video>
+    <section v-if="project.media && (project.media.videoDemo || project.media.thumbnail || project.media.gallery?.length)" class="pt-8 mb-12" style="border-top: 1px solid var(--border);">
+      <div class="flex items-center justify-between gap-4 mb-6">
+        <div>
+          <span style="font-family: var(--font-mono); font-size: 11px; color: var(--primary); letter-spacing: 0.14em; text-transform: uppercase;">
+            Showcase
+          </span>
+          <h2 style="font-family: var(--font-display); font-size: 22px; font-weight: 600; color: var(--foreground); margin-top: 2px;">
+            Media & Architectural Demos
+          </h2>
+        </div>
       </div>
-      <div v-if="project.media.thumbnail" class="rounded overflow-hidden" style="border: 1px solid var(--border);">
-        <img :src="project.media.thumbnail" :alt="project.title + ' preview'" class="w-full max-h-[480px] object-cover" />
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Video Demo Card -->
+        <div v-if="project.media.videoDemo" class="flex flex-col gap-2">
+          <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted-foreground); letter-spacing: 0.08em; text-transform: uppercase;">
+            ▶ Live Demo Video
+          </span>
+          <div class="rounded-md overflow-hidden relative group" style="border: 1px solid var(--border); background: var(--card); aspect-ratio: 16/9;">
+            <iframe
+              v-if="getYouTubeEmbedUrl(project.media.videoDemo)"
+              :src="getYouTubeEmbedUrl(project.media.videoDemo)"
+              title="YouTube video player"
+              class="w-full h-full border-0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            />
+            <video
+              v-else
+              controls
+              loop
+              muted
+              playsinline
+              :src="project.media.videoDemo"
+              class="w-full h-full object-cover"
+            />
+          </div>
+        </div>
+
+        <!-- Main Thumbnail Card -->
+        <div v-if="project.media.thumbnail" class="flex flex-col gap-2">
+          <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted-foreground); letter-spacing: 0.08em; text-transform: uppercase;">
+            📷 Primary Interface
+          </span>
+          <div class="rounded-md overflow-hidden relative group cursor-pointer" style="border: 1px solid var(--border); background: var(--card); aspect-ratio: 16/9;">
+            <img
+              :src="project.media.thumbnail"
+              :alt="project.title + ' primary preview'"
+              class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
+        </div>
+
+        <!-- Additional Gallery Images -->
+        <div
+          v-for="(img, idx) in project.media.gallery"
+          :key="idx"
+          class="flex flex-col gap-2"
+        >
+          <span style="font-family: var(--font-mono); font-size: 10px; color: var(--muted-foreground); letter-spacing: 0.08em; text-transform: uppercase;">
+            🖼️ Feature Screen {{ idx + 1 }}
+          </span>
+          <div class="rounded-md overflow-hidden relative group cursor-pointer" style="border: 1px solid var(--border); background: var(--card); aspect-ratio: 16/9;">
+            <img
+              :src="img"
+              :alt="`${project.title} screenshot ${idx + 1}`"
+              class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+            />
+          </div>
+        </div>
       </div>
     </section>
 

@@ -1,7 +1,7 @@
 [
   {
-    "title": "Study Workflow System (StudyLoop)",
-    "summary": "Local-first desktop application built with Go, Wails, React, SQLite, and FSRS focused on guided learning workflows, spaced repetition, and offline RAG.",
+    "title": "StudyLoop",
+    "summary": "StudyLoop is a local-first desktop application built with Go, Wails, and Vue 3 that guides learners through a structured study workflow using a persistent SQLite study queue, FSRS spaced repetition, and local RAG capabilities.",
     "category": "Educational Technology",
     "date": "2026-07",
     "tier": 1,
@@ -9,27 +9,41 @@
     "techStack": [
       "Go",
       "Wails",
-      "React",
+      "Vue.js",
+      "JavaScript",
       "SQLite",
-      "FSRS",
+      "sqlite-vec",
       "ONNX Runtime",
-      "sqlite-vec"
+      "FSRS",
+      "Vite"
     ],
     "highlights": [
-      "Architected a local-first desktop application focused on long-term learning retention.",
-      "Designed reading workflows integrating AI-generated quizzes, flashcards, and reinforcement-based review.",
-      "Implemented SQLite-backed persistence with FSRS scheduling for spaced repetition.",
-      "Structured the application around modular feature boundaries to improve maintainability."
+      "Implements a guided learning workflow driven by a persistent SQLite study queue with deterministic priority ordering.",
+      "Integrates FSRS (Free Spaced Repetition Scheduler) for long-term flashcard retention and review session management.",
+      "Uses ONNX Runtime and sqlite-vec (vec0) for local INT8 embedding generation and vector search in offline RAG pipelines.",
+      "Built with a Go backend desktop shell using Wails v2 and a Vue 3 multi-page frontend.",
+      "Supports dual-tier LLM configurations (Fast and Heavy models) with OS keyring API key storage for AI explanations and quiz generation."
     ],
     "repoName": "studyloop",
-    "repositoryUrl": "https://github.com/vishnuj-n/studyloop",
+    "repositoryUrl": "https://github.com/Vishnuj-n/studyloop",
     "stars": 0,
     "forks": 0,
     "license": null,
-    "languages": {},
-    "createdAt": "2026-08-02T17:21:49.472Z",
-    "updatedAt": "2026-08-02T17:21:49.474Z",
-    "pushedAt": "2026-08-02T17:21:49.474Z"
+    "languages": {
+      "Go": 848525,
+      "Vue": 429038,
+      "JavaScript": 76580,
+      "CSS": 27604,
+      "Python": 21771,
+      "PLpgSQL": 17552,
+      "NSIS": 12428,
+      "PowerShell": 11663,
+      "Shell": 5900,
+      "HTML": 1346
+    },
+    "createdAt": "2026-04-11T14:22:03Z",
+    "updatedAt": "2026-08-02T08:35:55Z",
+    "pushedAt": "2026-08-02T08:37:51Z"
   },
   {
     "title": "Voice Agent Platform",
@@ -58,9 +72,9 @@
     "forks": 0,
     "license": null,
     "languages": {},
-    "createdAt": "2026-08-02T17:21:49.474Z",
-    "updatedAt": "2026-08-02T17:21:49.474Z",
-    "pushedAt": "2026-08-02T17:21:49.474Z"
+    "createdAt": "2026-08-03T02:42:27.712Z",
+    "updatedAt": "2026-08-03T02:42:27.715Z",
+    "pushedAt": "2026-08-03T02:42:27.715Z"
   },
   {
     "title": "WalletOS",
@@ -91,9 +105,9 @@
     "forks": 0,
     "license": null,
     "languages": {},
-    "createdAt": "2026-08-02T17:21:49.475Z",
-    "updatedAt": "2026-08-02T17:21:49.475Z",
-    "pushedAt": "2026-08-02T17:21:49.475Z"
+    "createdAt": "2026-08-03T02:42:27.715Z",
+    "updatedAt": "2026-08-03T02:42:27.715Z",
+    "pushedAt": "2026-08-03T02:42:27.715Z"
   },
   {
     "title": "Forge CLI",
@@ -121,9 +135,9 @@
     "forks": 0,
     "license": null,
     "languages": {},
-    "createdAt": "2026-08-02T17:21:49.475Z",
-    "updatedAt": "2026-08-02T17:21:49.475Z",
-    "pushedAt": "2026-08-02T17:21:49.475Z"
+    "createdAt": "2026-08-03T02:42:27.715Z",
+    "updatedAt": "2026-08-03T02:42:27.715Z",
+    "pushedAt": "2026-08-03T02:42:27.715Z"
   },
   {
     "title": "Mind Palace Study Tool",
@@ -150,9 +164,9 @@
     "forks": 0,
     "license": null,
     "languages": {},
-    "createdAt": "2026-08-02T17:21:49.475Z",
-    "updatedAt": "2026-08-02T17:21:49.475Z",
-    "pushedAt": "2026-08-02T17:21:49.475Z"
+    "createdAt": "2026-08-03T02:42:27.715Z",
+    "updatedAt": "2026-08-03T02:42:27.715Z",
+    "pushedAt": "2026-08-03T02:42:27.715Z"
   },
   {
     "title": "FocusPlay",
@@ -178,8 +192,8 @@
     "forks": 0,
     "license": null,
     "languages": {},
-    "createdAt": "2026-08-02T17:21:49.475Z",
-    "updatedAt": "2026-08-02T17:21:49.475Z",
-    "pushedAt": "2026-08-02T17:21:49.475Z"
+    "createdAt": "2026-08-03T02:42:27.715Z",
+    "updatedAt": "2026-08-03T02:42:27.715Z",
+    "pushedAt": "2026-08-03T02:42:27.715Z"
   }
 ]
