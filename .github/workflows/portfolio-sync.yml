@@ -15,7 +15,6 @@ jobs:
   trigger-vercel-build:
     name: Trigger Vercel production build
     runs-on: ubuntu-latest
-    environment: Production
     timeout-minutes: 5
     steps:
       - name: Trigger deploy hook

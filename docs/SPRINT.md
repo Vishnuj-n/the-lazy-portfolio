@@ -69,7 +69,7 @@ Build and deploy a zero-maintenance, automated developer portfolio powered by Vi
 ---
 
 ### Sprint 8: V1.5 Agent Ingestion Blueprint & Master Resume Sync
-- [ ] **Task 8.1:** Create `master_resume.md` single-source-of-truth document.
+- [X] **Task 8.1:** Create `master_resume.md` single-source-of-truth document.
 - [ ] **Task 8.2:** Craft Master Resume Prompt template for LLMs to generate `portfolio.json` files.
 - [ ] **Task 8.3:** Write step-by-step developer guide for populating project manifests via AI coding agents.
 
