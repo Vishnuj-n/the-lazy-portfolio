@@ -1,0 +1,50 @@
+name: "Work Experience Intake"
+description: "Submit a new or updated work experience role"
+title: "[EXPERIENCE]: "
+labels: ["intake:experience"]
+body:
+  - type: dropdown
+    id: action
+    attributes:
+      label: "Action"
+      options:
+        - "Create"
+        - "Update"
+      default: 0
+    validations:
+      required: true
+  - type: input
+    id: company
+    attributes:
+      label: "Company / Organization Name"
+      placeholder: "e.g. Ellipsonic"
+    validations:
+      required: true
+  - type: input
+    id: role
+    attributes:
+      label: "Role / Position"
+      placeholder: "e.g. Software Developer Intern"
+    validations:
+      required: true
+  - type: input
+    id: period
+    attributes:
+      label: "Period"
+      placeholder: "e.g. Mar 2026 – Jul 2026"
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: "Location"
+      placeholder: "e.g. Bengaluru, India"
+    validations:
+      required: true
+  - type: textarea
+    id: highlights
+    attributes:
+      label: "Highlights (One per line)"
+      placeholder: "e.g. Engineered backend REST APIs in Nx monorepo.\nAutomated containerized workflows."
+    validations:
+      required: true

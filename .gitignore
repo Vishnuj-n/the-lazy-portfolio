@@ -9,9 +9,8 @@ master_resume.md
 
 test-results/
 # Agent configuration & brain logs
-.agents/
-!.agents/skills/
-
+.agents/skills/*
+!.agents/skills/add-to-portfolio/
 # Build output
 dist/
 

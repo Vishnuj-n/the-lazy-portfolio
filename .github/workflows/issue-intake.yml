@@ -1,0 +1,50 @@
+name: Portfolio Issue Intake Automation
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: issue-intake-${{ github.event.issue.number }}
+  cancel-in-progress: true
+
+jobs:
+  process-intake:
+    name: Process Issue Intake
+    # Safest Multi-Layer Owner Security Gate
+    if: github.event.issue.author_association == 'OWNER' && github.actor == github.repository_owner
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run Issue Parser Engine
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_LABELS: ${{ join(github.event.issue.labels.*.name, ',') }}
+          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
+        run: node scripts/parse-issue.js
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: "feat(intake): update portfolio dataset from issue #${{ github.event.issue.number }}"
+          branch: "intake/issue-${{ github.event.issue.number }}"
+          title: "intake: dataset update for issue #${{ github.event.issue.number }}"
+          body: |
+            Automated issue intake update triggered by @${{ github.actor }}.
+            
+            Closes #${{ github.event.issue.number }}
+          labels: "intake:automated"

@@ -1,0 +1,18 @@
+name: "AI Freeform Portfolio Intake"
+description: "Paste raw text, links, or image attachments to add or update portfolio data using AI"
+title: "[INTAKE]: "
+labels: ["intake:ai"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## AI Freeform Intake
+        Paste any rough notes, bullet points, certification details, experience updates, or screenshots below. The AI parser will structure and update `src/data/*.json` via an automated PR.
+  - type: textarea
+    id: content
+    attributes:
+      label: "Raw Input / Notes / Links"
+      description: "Enter project, certification, or work experience details here."
+      placeholder: "e.g. Added Oracle Cloud Generative AI Professional cert issued in Aug 2026. Badge image: https://..."
+    validations:
+      required: true
