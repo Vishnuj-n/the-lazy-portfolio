@@ -26,7 +26,7 @@
       <div class="flex items-center gap-3 flex-wrap">
         <a
           href="mailto:vishnujn2005@gmail.com"
-          style="font-family: var(--font-sans); font-size: 13px; font-weight: 500; padding: 10px 22px; background: var(--primary); color: var(--primary-foreground); border-radius: var(--radius); text-decoration: none; display: inline-flex; items-center: center; gap: 8px; transition: opacity 0.15s;"
+          style="font-family: var(--font-sans); font-size: 13px; font-weight: 500; padding: 10px 22px; background: var(--primary); color: var(--primary-foreground); border-radius: var(--radius); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.15s;"
           class="hover:opacity-90"
         >
           <span>Send Email</span>

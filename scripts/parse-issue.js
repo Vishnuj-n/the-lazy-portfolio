@@ -25,6 +25,24 @@ export function extractImageUrls(text) {
   return Array.from(urls);
 }
 
+const FIELD_PARSERS = [
+  { match: h => h.includes('action'), parse: (c, d) => { d.action = c.toLowerCase().includes('update') ? 'update' : 'create'; } },
+  { match: h => h.includes('certification title') || h.includes('title'), parse: (c, d) => { d.title = c; } },
+  { match: h => h.includes('issuer'), parse: (c, d) => { d.issuer = c; } },
+  { match: h => h.includes('slug'), parse: (c, d) => { if (c && c.toLowerCase() !== '_no response_') d.slug = c; } },
+  { match: h => h.includes('color'), parse: (c, d) => { if (c && c.toLowerCase() !== '_no response_') d.color = c.replace(/^#/, ''); } },
+  { match: h => h.includes('company') || h.includes('organization'), parse: (c, d) => { d.company = c; } },
+  { match: h => h.includes('role'), parse: (c, d) => { d.role = c; } },
+  { match: h => h.includes('period'), parse: (c, d) => { d.period = c; } },
+  { match: h => h.includes('location'), parse: (c, d) => { d.location = c; } },
+  { match: h => h.includes('highlights'), parse: (c, d) => {
+    d.highlights = c
+      .split('\n')
+      .map(line => line.replace(/^[-*•\d\.]+\s*/, '').trim())
+      .filter(Boolean);
+  } },
+];
+
 export function parseTemplateBody(body) {
   if (!body || typeof body !== 'string') return null;
 
@@ -37,30 +55,8 @@ export function parseTemplateBody(body) {
     const header = lines[0].trim().toLowerCase();
     const content = lines.slice(1).join('\n').trim();
 
-    if (header.includes('action')) {
-      data.action = content.toLowerCase().includes('update') ? 'update' : 'create';
-    } else if (header.includes('certification title') || header.includes('title')) {
-      data.title = content;
-    } else if (header.includes('issuer')) {
-      data.issuer = content;
-    } else if (header.includes('slug')) {
-      if (content && content.toLowerCase() !== '_no response_') data.slug = content;
-    } else if (header.includes('color')) {
-      if (content && content.toLowerCase() !== '_no response_') data.color = content.replace(/^#/, '');
-    } else if (header.includes('company') || header.includes('organization')) {
-      data.company = content;
-    } else if (header.includes('role')) {
-      data.role = content;
-    } else if (header.includes('period')) {
-      data.period = content;
-    } else if (header.includes('location')) {
-      data.location = content;
-    } else if (header.includes('highlights')) {
-      data.highlights = content
-        .split('\n')
-        .map(line => line.replace(/^[-*•\d\.]+\s*/, '').trim())
-        .filter(Boolean);
-    }
+    const parser = FIELD_PARSERS.find(p => p.match(header));
+    if (parser) parser.parse(content, data);
   }
 
   return Object.keys(data).length > 0 ? data : null;
@@ -145,6 +141,55 @@ Output ONLY raw valid JSON. Do not include markdown code block backticks.`;
   throw new Error(`LLM parsing failed after 3 attempts: ${lastError}`);
 }
 
+async function upsertCertification(parsedData, certPath) {
+  const errors = validateCertification(parsedData);
+  if (errors.length) throw new Error(`Invalid certification: ${errors.join(', ')}`);
+
+  const raw = await readFile(certPath, 'utf8').catch(() => '[]');
+  const certs = JSON.parse(raw);
+  const action = (parsedData.action || 'create').toLowerCase();
+
+  const existingIndex = certs.findIndex(c => c.title.toLowerCase() === parsedData.title.toLowerCase());
+  const cleanCert = { title: parsedData.title, issuer: parsedData.issuer };
+  if (parsedData.slug) cleanCert.slug = parsedData.slug;
+  if (parsedData.color) cleanCert.color = parsedData.color;
+
+  if (action === 'update' && existingIndex !== -1) {
+    certs[existingIndex] = { ...certs[existingIndex], ...cleanCert };
+  } else {
+    if (existingIndex !== -1) certs[existingIndex] = cleanCert;
+    else certs.push(cleanCert);
+  }
+
+  await writeFile(certPath, JSON.stringify(certs, null, 2) + '\n', 'utf8');
+  return { type: 'certification', action, data: cleanCert, path: certPath };
+}
+
+async function upsertExperience(parsedData, expPath) {
+  const errors = validateExperience(parsedData);
+  if (errors.length) throw new Error(`Invalid experience: ${errors.join(', ')}`);
+
+  const raw = await readFile(expPath, 'utf8').catch(() => '[]');
+  const exps = JSON.parse(raw);
+  const action = (parsedData.action || 'create').toLowerCase();
+
+  const nameKey = parsedData.company ? 'company' : 'organization';
+  const nameVal = parsedData.company || parsedData.organization;
+
+  const existingIndex = exps.findIndex(e => (e.company || e.organization || '').toLowerCase() === nameVal.toLowerCase());
+  const cleanExp = { [nameKey]: nameVal, role: parsedData.role, period: parsedData.period, location: parsedData.location, highlights: parsedData.highlights };
+
+  if (action === 'update' && existingIndex !== -1) {
+    exps[existingIndex] = { ...exps[existingIndex], ...cleanExp };
+  } else {
+    if (existingIndex !== -1) exps[existingIndex] = cleanExp;
+    else exps.push(cleanExp);
+  }
+
+  await writeFile(expPath, JSON.stringify(exps, null, 2) + '\n', 'utf8');
+  return { type: 'experience', action, data: cleanExp, path: expPath };
+}
+
 export async function processIssueIntake({
   issueBody,
   issueLabels = [],
@@ -157,18 +202,14 @@ export async function processIssueIntake({
   const isExperience = issueLabels.includes('intake:experience');
   const isAI = issueLabels.includes('intake:ai');
 
-  let parsedData = null;
+  let parsedData = parseTemplateBody(issueBody);
   let entityType = null;
-
-  // 1. Try static template parsing first for any issue
-  parsedData = parseTemplateBody(issueBody);
 
   if (isCredential) {
     entityType = 'certification';
   } else if (isExperience) {
     entityType = 'experience';
   } else if (parsedData) {
-    // Auto-detect entity type from parsed fields if labels are missing
     if (parsedData.title || parsedData.issuer) {
       entityType = 'certification';
     } else if (parsedData.company || parsedData.role) {
@@ -176,7 +217,6 @@ export async function processIssueIntake({
     }
   }
 
-  // 2. Only fall back to LLM if static parsing failed OR if explicitly labeled intake:ai
   if (!parsedData || !entityType || isAI) {
     if (isAI || !parsedData) {
       const schemaDesc = `
@@ -197,50 +237,9 @@ Return JSON object: { "entityType": "certification"|"experience", "data": <entit
   }
 
   if (entityType === 'certification') {
-    const errors = validateCertification(parsedData);
-    if (errors.length) throw new Error(`Invalid certification: ${errors.join(', ')}`);
-
-    const raw = await readFile(certPath, 'utf8').catch(() => '[]');
-    const certs = JSON.parse(raw);
-    const action = (parsedData.action || 'create').toLowerCase();
-
-    const existingIndex = certs.findIndex(c => c.title.toLowerCase() === parsedData.title.toLowerCase());
-    const cleanCert = { title: parsedData.title, issuer: parsedData.issuer };
-    if (parsedData.slug) cleanCert.slug = parsedData.slug;
-    if (parsedData.color) cleanCert.color = parsedData.color;
-
-    if (action === 'update' && existingIndex !== -1) {
-      certs[existingIndex] = { ...certs[existingIndex], ...cleanCert };
-    } else {
-      if (existingIndex !== -1) certs[existingIndex] = cleanCert;
-      else certs.push(cleanCert);
-    }
-
-    await writeFile(certPath, JSON.stringify(certs, null, 2) + '\n', 'utf8');
-    return { type: 'certification', action, data: cleanCert, path: certPath };
+    return upsertCertification(parsedData, certPath);
   } else if (entityType === 'experience') {
-    const errors = validateExperience(parsedData);
-    if (errors.length) throw new Error(`Invalid experience: ${errors.join(', ')}`);
-
-    const raw = await readFile(expPath, 'utf8').catch(() => '[]');
-    const exps = JSON.parse(raw);
-    const action = (parsedData.action || 'create').toLowerCase();
-
-    const nameKey = parsedData.company ? 'company' : 'organization';
-    const nameVal = parsedData.company || parsedData.organization;
-
-    const existingIndex = exps.findIndex(e => (e.company || e.organization || '').toLowerCase() === nameVal.toLowerCase());
-    const cleanExp = { [nameKey]: nameVal, role: parsedData.role, period: parsedData.period, location: parsedData.location, highlights: parsedData.highlights };
-
-    if (action === 'update' && existingIndex !== -1) {
-      exps[existingIndex] = { ...exps[existingIndex], ...cleanExp };
-    } else {
-      if (existingIndex !== -1) exps[existingIndex] = cleanExp;
-      else exps.push(cleanExp);
-    }
-
-    await writeFile(expPath, JSON.stringify(exps, null, 2) + '\n', 'utf8');
-    return { type: 'experience', action, data: cleanExp, path: expPath };
+    return upsertExperience(parsedData, expPath);
   }
 
   throw new Error(`Unsupported entity type: ${entityType}`);

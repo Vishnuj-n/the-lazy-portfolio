@@ -90,6 +90,43 @@ async function mapLimit(items, limit, worker) {
   return results;
 }
 
+async function parseRemoteManifest(response, repoName, logger) {
+  if (response.status === 404) return null;
+  if (!response.ok) throw await responseError(response);
+
+  const content = await response.json();
+  if (content?.type !== 'file' || content.encoding !== 'base64' || typeof content.content !== 'string') {
+    return null;
+  }
+
+  let parsed;
+  try {
+    parsed = JSON.parse(Buffer.from(content.content.replace(/\s/g, ''), 'base64').toString('utf8'));
+  } catch (error) {
+    throw new Error(`PORTFOLIO.json is malformed JSON: ${error.message}`);
+  }
+
+  const errors = validateManifest(parsed);
+  if (errors.length > 0) {
+    logger.warn(`Skipping ${repoName}: invalid PORTFOLIO.json\n- ${errors.join('\n- ')}`);
+    return null;
+  }
+
+  return parsed;
+}
+
+async function fetchRepoLanguages(owner, name, { fetchImpl, headers }) {
+  try {
+    const response = await fetchImpl(`${API_ROOT}/repos/${owner}/${name}/languages`, { headers });
+    if (!response.ok) return {};
+    const parsed = await response.json();
+    if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+      return parsed;
+    }
+  } catch {}
+  return {};
+}
+
 async function fetchManifest(repo, username, options) {
   const { fetchImpl, headers, logger, localProjects = new Map() } = options;
   const owner = encodeURIComponent(username);
@@ -97,51 +134,16 @@ async function fetchManifest(repo, username, options) {
   const ref = encodeURIComponent(repo.default_branch);
   const manifestUrl = `${API_ROOT}/repos/${owner}/${name}/contents/PORTFOLIO.json?ref=${ref}`;
 
-  let manifest = null;
   const response = await fetchImpl(manifestUrl, { headers });
-  if (response.status === 404) {
-    manifest = null;
-  } else if (!response.ok) {
-    throw await responseError(response);
-  } else {
-    const content = await response.json();
-    if (content?.type === 'file' && content.encoding === 'base64' && typeof content.content === 'string') {
-      let parsed;
-      try {
-        parsed = JSON.parse(Buffer.from(content.content.replace(/\s/g, ''), 'base64').toString('utf8'));
-      } catch (error) {
-        throw new Error(`PORTFOLIO.json is malformed JSON: ${error.message}`);
-      }
-      const errors = validateManifest(parsed);
-      if (!errors.length) {
-        manifest = parsed;
-      } else {
-        logger.warn(`Skipping ${repo.name}: invalid PORTFOLIO.json\n- ${errors.join('\n- ')}`);
-      }
-    }
-  }
+  let manifest = await parseRemoteManifest(response, repo.name, logger);
 
-  // Fallback to local manifest if remote PORTFOLIO.json is missing or invalid
   if (!manifest) {
-    const localMatch = localProjects.get(repo.name.toLowerCase());
-    if (localMatch) {
-      manifest = localMatch;
-    } else {
-      return null;
-    }
+    manifest = localProjects.get(repo.name.toLowerCase()) || null;
   }
 
-  let languages = {};
-  try {
-    const languagesResponse = await fetchImpl(`${API_ROOT}/repos/${owner}/${name}/languages`, { headers });
-    if (languagesResponse.ok) {
-      const parsedLanguages = await languagesResponse.json();
-      if (parsedLanguages && typeof parsedLanguages === 'object' && !Array.isArray(parsedLanguages)) {
-        languages = parsedLanguages;
-      }
-    }
-  } catch {}
+  if (!manifest) return null;
 
+  const languages = await fetchRepoLanguages(owner, name, { fetchImpl, headers });
   const cleanManifest = { ...manifest };
   delete cleanManifest.repoName;
 
