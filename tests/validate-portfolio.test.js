@@ -1,14 +1,19 @@
-import { describe, it } from 'node:test';
+import { describe, it } from 'vitest';
 import assert from 'node:assert/strict';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
-import { resolve } from 'node:path';
+import { resolve, join } from 'node:path';
+import { writeFile, rm, mkdtemp } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
 
 const execFileAsync = promisify(execFile);
 const JS_SCRIPT_PATH = resolve('scripts/validate-portfolio.js');
 
 describe('Node.js Manifest Validator Script', () => {
-  it('validates a valid PORTFOLIO.json object via Node.js script', async () => {
+  it('validates a valid PORTFOLIO.json file via Node.js script', async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), 'portfolio-val-'));
+    const tempFile = join(tempDir, 'PORTFOLIO.json');
+
     const validManifest = JSON.stringify({
       title: 'Valid Project',
       summary: 'A valid project description containing at least 40 characters for testing.',
@@ -19,15 +24,22 @@ describe('Node.js Manifest Validator Script', () => {
       techStack: ['Node.js', 'Vue 3'],
     });
 
-    const { stdout, stderr } = await execFileAsync('node', [JS_SCRIPT_PATH, '-'], {
-      input: validManifest,
-    });
+    try {
+      await writeFile(tempFile, validManifest, 'utf8');
 
-    assert.match(stdout, /VALID: -/);
-    assert.equal(stderr, '');
+      const { stdout, stderr } = await execFileAsync('node', [JS_SCRIPT_PATH, tempFile]);
+
+      assert.match(stdout, /VALID:/);
+      assert.equal(stderr, '');
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   });
 
-  it('rejects an invalid PORTFOLIO.json object with validation errors via Node.js script', async () => {
+  it('rejects an invalid PORTFOLIO.json file with validation errors via Node.js script', async () => {
+    const tempDir = await mkdtemp(join(tmpdir(), 'portfolio-val-'));
+    const tempFile = join(tempDir, 'PORTFOLIO.json');
+
     const invalidManifest = JSON.stringify({
       title: 'A', // Too short (<2 chars)
       summary: 'Short', // Too short (<40 chars)
@@ -35,14 +47,16 @@ describe('Node.js Manifest Validator Script', () => {
     });
 
     try {
-      await execFileAsync('node', [JS_SCRIPT_PATH, '-'], {
-        input: invalidManifest,
-      });
+      await writeFile(tempFile, invalidManifest, 'utf8');
+
+      await execFileAsync('node', [JS_SCRIPT_PATH, tempFile]);
       assert.fail('Should have failed validation');
     } catch (error) {
       assert.equal(error.code, 1);
-      assert.match(error.stderr, /INVALID: -/);
+      assert.match(error.stderr, /INVALID:/);
       assert.match(error.stderr, /missing required field/);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
     }
   });
 });
