@@ -39,6 +39,7 @@ jobs:
         run: node scripts/parse-issue.js
 
       - name: Create Pull Request
+        id: cpr
         uses: peter-evans/create-pull-request@v6
         with:
           commit-message: "feat(intake): update portfolio dataset from issue #${{ github.event.issue.number }}"
@@ -49,3 +50,26 @@ jobs:
             
             Closes #${{ github.event.issue.number }}
           labels: "intake:automated"
+
+      - name: Comment PR Link on Issue
+        if: success() && steps.cpr.outputs.pull-request-number
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
+          PR_NUM: ${{ steps.cpr.outputs.pull-request-number }}
+          ISSUE_NUM: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE_NUM" --body "🚀 **Automated Intake Update:** Generated PR [#${PR_NUM}](${PR_URL}) to review and apply the dataset changes."
+
+      - name: Comment Failure on Issue
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUM: ${{ github.event.issue.number }}
+          RUN_ID: ${{ github.run_id }}
+          REPO: ${{ github.repository }}
+        run: |
+          RUN_URL="https://github.com/${REPO}/actions/runs/${RUN_ID}"
+          gh issue comment "$ISSUE_NUM" --body "❌ **Automated Intake Failed:** The intake parser workflow encountered an error while processing this issue. [View Workflow Run Logs](${RUN_URL})"
+
+
