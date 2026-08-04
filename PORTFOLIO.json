@@ -1,0 +1,21 @@
+{
+  "title": "Zero-Maintenance Portfolio System",
+  "summary": "Automated dark editorial portfolio ingesting public GitHub repositories, verifying media assets, and generating static Vue 3 web applications.",
+  "category": "Web Architecture & Tooling",
+  "date": "2026-08",
+  "tier": 1,
+  "priority": 100,
+  "techStack": [
+    "Vue 3",
+    "Vite",
+    "Tailwind CSS",
+    "Node.js",
+    "Playwright",
+    "OKLCH"
+  ],
+  "highlights": [
+    "Ingests public GitHub repositories automatically via PORTFOLIO.json manifests.",
+    "Verifies remote media assets and validates schema integrity prior to build.",
+    "Built with Vue 3, Vite, and dark editorial OKLCH color tokens."
+  ]
+}

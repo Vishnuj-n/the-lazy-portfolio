@@ -59,4 +59,13 @@ describe('Node.js Manifest Validator Script', () => {
       await rm(tempDir, { recursive: true, force: true });
     }
   });
+
+  it('validates the root PORTFOLIO.json of this repository', async () => {
+    const rootManifestPath = resolve('PORTFOLIO.json');
+    const { stdout, stderr } = await execFileAsync('node', [JS_SCRIPT_PATH, rootManifestPath]);
+    assert.match(stdout, /VALID:/);
+    assert.equal(stderr, '');
+  });
 });
+
+

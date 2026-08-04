@@ -76,6 +76,30 @@ const recentExperience = computed(() => {
           {{ profile.summary }}
         </p>
 
+        <!-- Headshot portrait frame (Mobile view - rendered inline right after summary) -->
+        <div class="block md:hidden mb-8 flex justify-center">
+          <div
+            class="w-[240px] h-[300px] transition-all duration-300"
+            style="border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: #111111; position: relative; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);"
+          >
+            <img
+              v-if="!avatarFailed"
+              src="/picture.png"
+              alt="Vishnu J Narayanan"
+              style="width: 100%; height: 100%; object-fit: cover;"
+              @error="avatarFailed = true"
+            />
+            <div
+              v-else
+              class="flex flex-col items-center justify-center h-full p-4 text-center"
+              style="background: #161616;"
+            >
+              <span style="font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--primary);">VN</span>
+              <span style="font-family: var(--font-mono); font-size: 11px; color: var(--muted-foreground); margin-top: 8px;">Go · Python · AI</span>
+            </div>
+          </div>
+        </div>
+
         <ul
           class="flex flex-col gap-3.5 mb-8 p-0 list-none"
           style="font-size: 19px; color: var(--secondary-foreground); font-family: var(--font-sans); line-height: 1.65;"
@@ -173,10 +197,10 @@ const recentExperience = computed(() => {
         </div>
       </div>
 
-      <!-- Headshot portrait frame -->
-      <div class="flex-shrink-0">
+      <!-- Headshot portrait frame (Desktop view) -->
+      <div class="hidden md:block flex-shrink-0">
         <div
-          class="w-[260px] h-[325px] md:w-[320px] md:h-[400px] transition-all duration-300"
+          class="w-[320px] h-[400px] transition-all duration-300"
           style="border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); background: #111111; position: relative; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);"
         >
           <img
