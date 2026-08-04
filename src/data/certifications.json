@@ -26,5 +26,9 @@
     "issuer": "Forage",
     "slug": "amazonwebservices",
     "color": "FF9900"
+  },
+  {
+    "title": "Microsoft AZ 900",
+    "issuer": "Microsoft"
   }
 ]
