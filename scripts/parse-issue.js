@@ -84,10 +84,12 @@ export function validateExperience(exp) {
 }
 
 export async function callOpenAICompatibleLLM({ prompt, schemaDescription, fetchImpl = fetch, env = process.env }) {
-  let baseUrl = env.OPENAI_BASE_URL || 'https://api.openai.com/v1';
+  let baseUrl = (env.OPENAI_BASE_URL && env.OPENAI_BASE_URL.trim()) || 'https://api.openai.com/v1';
   while (baseUrl.endsWith('/')) baseUrl = baseUrl.slice(0, -1);
   const apiKey = env.OPENAI_API_KEY;
-  const model = env.OPENAI_MODEL || 'gpt-4o-mini';
+  const model = (env.OPENAI_MODEL && env.OPENAI_MODEL.trim()) || 'gpt-4o-mini';
+
+  console.log(`[LLM Intake] Using API Base URL: ${baseUrl}, Model: ${model}`);
 
   if (!apiKey) {
     throw new Error('OPENAI_API_KEY environment variable is not configured');
